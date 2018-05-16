@@ -1,0 +1,19 @@
+{% import "_includes/forms" as forms %}
+
+{# {{ forms.selectField({
+    id: name ~ link.type|id ~ '-value',
+    name: name ~ '[type]',
+    fieldClass: 'listingsource--type',
+    options: options,
+    value: currentLink.type ?? '',
+    toggle: true,
+    targetPrefix: name ~ '-'
+}) }} #}
+
+{{ forms.selectField({
+    id: name ~ link.type|id ~ '-value',
+    name: name ~ '[values]['~ link.type ~']',
+    options: options,
+    value: currentLink.value ?? '',
+}) }}
+

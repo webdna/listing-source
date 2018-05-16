@@ -1,0 +1,79 @@
+{% import "_includes/forms" as forms %}
+
+<div class="linkit--fieldSettings">
+
+	{# TODO: Feels a bit too loose to select the first item. Rework to include reordering #}
+	{# {{ forms.textField({
+		label: "Select Link Text"|t('linkit'),
+		instructions: "Set the first item to be displayed in the link select."|t('linkit'),
+		name: 'selectLinkText',
+		placeholder: field.selectLinkText,
+		placeholder: field.defaultSelectLinkText,
+		errors: field.getErrors('selectLinkText'),
+	}) }} #}
+
+	{{ forms.field({
+		errors: field.getErrors('enabledLinkTypes'),
+		first: true
+	}) }}
+
+	{% set availableLinkFieldsByGroup = field.availableLinkTypes|group('groupTitle')  %}
+
+	{% for groupTitle, linksTypesInGroup in availableLinkFieldsByGroup %}
+
+		{{ forms.field({
+			label: groupTitle,
+			instructions: "Select and configure the {groupTitle} you would like to make available."|t('linkit', {groupTitle: groupTitle|lower}),
+			first: true
+		}) }}
+
+		{% for linkType in linksTypesInGroup %}
+
+			{% set name = 'types['~linkType.type~']' %}
+			{% set isEnabled = field.types[linkType.type].enabled ?? false %}
+
+			{{ forms.lightSwitchField({
+				id: linkType.type|id,
+				name: name~'[enabled]',
+				label: linkType.defaultLabel(),
+				toggle: linkType.hasSettings ? '#' ~ linkType.type|id ~ '-settings' : null,
+				on: isEnabled,
+			}) }}
+
+			{% if linkType.hasSettings %}
+				<div id="{{ linkType.type|id }}-settings" class="{{ not isEnabled ? 'hidden' }}">
+					{% namespace name %}
+						{{ linkType.getSettingsHtml()|raw }}
+					{% endnamespace %}
+				</div>
+			{% endif %}
+
+		{% endfor %}
+
+		<hr>
+
+	{% endfor %}
+
+	{# {{ forms.textField({
+		label: "Default Link Text"|t('linkit'),
+		instructions: "Set a default text value for this link, can be overridden if 'Allow custom link text' is selected."|t('linkit'),
+		name: 'defaultText',
+		value: field.defaultText,
+		errors: field.getErrors('defaultText'),
+		placeholder: 'e.g Click here'
+	}) }} #}
+
+	{# {{ forms.checkboxField({
+		label: "Allow custom link text"|t('linkit'),
+		name: 'allowCustomText',
+		checked: field.allowCustomText
+	}) }} #}
+
+	{# {{ forms.checkboxField({
+		label: "Show option to open link in new window"|t('linkit'),
+		name: 'allowTarget',
+		checked: field.allowTarget
+	}) }} #}
+
+</div>
+

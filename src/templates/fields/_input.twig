@@ -1,0 +1,88 @@
+{% import "_includes/forms" as forms %}
+
+<div class="listingsource">
+
+	{% if field.enabledLinkTypes|length %}
+
+		{% set singleLinkType = field.enabledLinkTypes|length == 1 ? field.enabledLinkTypes[0] : false %}
+
+		<div class="flex">
+
+			{% if singleLinkType %}
+				{{ forms.hidden({
+	        	    id: id ~ '-type',
+	        	    name: name ~ '[type]',
+	        	    fieldClass: 'listingsource--type',
+	        	    value: singleLinkType.type,
+	        	}) }}
+			{% else %}
+		        <div>
+		        	{{ forms.selectField({
+		        	    id: id ~ '-type',
+		        	    name: name ~ '[type]',
+		        	    fieldClass: 'listingsource--type',
+		        	    options: field.enabledlinkTypesAsOptions,
+		        	    value: currentLink.type ?? '',
+		        	    toggle: true,
+		        	    targetPrefix: name ~ '-'
+		        	}) }}
+		        </div>
+		    {% endif %}
+
+	        <div class="flex-grow">
+	        	{% for linkType in field.enabledlinkTypes %}
+
+	        	    {% set isCurrentType = currentLink and currentLink.type == linkType.type %}
+
+	        	    <div id="{{ name }}-{{ linkType.type|id }}" class="listingsource--{{ linkType.defaultLabel|lower }} {{ not singleLinkType and not isCurrentType ? 'hidden' }}">
+	        	    	{{ linkType.getInputHtml(name, (isCurrentType ? currentLink : null), (element ?? null))|raw }}
+	        	    </div>
+
+	        	{% endfor %}
+	        </div>
+
+	    </div>
+
+		{% if field.allowCustomText or field.allowTarget %}
+
+			<div id="{{ id }}-any" class="flex listingsource--settings {{ not singleLinkType and (not currentLink or currentLink.type == '') ? 'hidden' }}">
+
+				{% if field.allowCustomText %}
+					<div class="flex-grow">
+						{{ forms.textField({
+							id: name~'CustomText',
+							name: name~'[customText]',
+							fieldClass: 'listingsource--customText',
+							placeholder: field.defaultText ? field.defaultText : 'Link Text'|t('listingsource'),
+							value: currentLink.customText ?? ''
+						}) }}
+					</div>
+				{% endif %}
+
+				{% if field.allowTarget %}
+					<div>
+						{{ forms.checkboxField({
+							id: name~'Target',
+							name: name~'[target]',
+							fieldClass: 'listingsource--target',
+							value: true,
+							label: 'Open link in new window?'|t('listingsource'),
+							checked: currentLink.target ?? null
+						}) }}
+					</div>
+				{% endif %}
+
+			</div>
+
+		{% endif %}
+
+		{% set errors = element.getErrors(field.handle~'.value') ?? [] %}
+		{{ forms.errorList(errors) }}
+
+	{% else %}
+
+		<p class="warning">{{ 'There are no enabled link types for this field'|t('listingsource') }}
+
+	{% endif %}
+
+</div>
