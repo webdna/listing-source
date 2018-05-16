@@ -20,7 +20,7 @@ To install the plugin, follow these instructions.
 
         composer require KuriousAgency/listingsource
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Lists.
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Lists
 
 ## Lists Overview
 
