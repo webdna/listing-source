@@ -120,11 +120,11 @@ abstract class Link extends SavableComponent implements LinkInterface
 
         // craft::dd($elementSettings);     
         if( ($this->getTypeHandle() == "channel") || ($this->getTypeHandle() == "entry") ) {
-
+            
             $entries = [];
             $sections = Craft::$app->sections->getAllSections();            
 
-            foreach($sections as $section){
+            foreach($sections as $section) {
                 if($section->type == 'channel'){
                     if($elementSettings['sources'] == '*' || in_array($section->id, $elementSettings['sources'])){
                         $options[] = [
@@ -140,12 +140,13 @@ abstract class Link extends SavableComponent implements LinkInterface
                 }
             }
 
-        } elseif($this->getTypeHandle() == "group") {
+        } elseif($this->getTypeHandle() == "group") {           
 
             $categories = Craft::$app->categories->getAllGroups();         
 
             foreach($categories as $categoryGroup) {
-                if($elementSettings['sources'] == '*' || in_array($categoryGroup->id, $elementSettings['sources'])){
+                
+                if($elementSettings['sources'] == '*' || in_array("group:".$categoryGroup->id, $elementSettings['sources'])){
                     $options[] = [
                         'label' => $categoryGroup->name,
                         'value' => $categoryGroup->id,

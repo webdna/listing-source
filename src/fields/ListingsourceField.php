@@ -168,7 +168,7 @@ class ListingsourceField extends Field
             'id' => $namespacedId,
             'name' => $this->handle,
         ]);
-        $view->registerJs('new Garnish.LinkitField('.$jsVariables.');');
+        $view->registerJs('new Garnish.ListingsourceField('.$jsVariables.');');
 
         // Render the input template
         return $view->renderTemplate(
