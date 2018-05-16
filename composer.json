@@ -1,5 +1,5 @@
 {
-	"name": "kuriousagency/listingsource",
+	"name": "kuriousagency/listing-source",
 	"description": "Craft CMS listing source plugin",
 	"type": "craft-plugin",
 	"minimum-stability": "dev",
@@ -14,9 +14,9 @@
 	],
 	"support": {
 		"issues":
-			"https://github.com/kuriousagency/listingsource/issues?state=open",
-		"source": "https://github.com/kuriousagency/listingsource",
-		"docs": "https://github.com/kuriousagency/listingsource"
+			"https://github.com/kuriousagency/listing-source/issues?state=open",
+		"source": "https://github.com/kuriousagency/listing-source",
+		"docs": "https://github.com/kuriousagency/listing-source"
 	},
 	"license": "proprietary",
 	"authors": [
@@ -44,7 +44,7 @@
 		"handle": "listingsource",
 		"hasCpSettings": false,
         "hasCpSection": false,
-		"changelogUrl": "https://raw.githubusercontent.com/kuriousagency/listingsource/master/CHANGELOG.md",
+		"changelogUrl": "https://raw.githubusercontent.com/kuriousagency/listing-source/master/CHANGELOG.md",
 		"class": "kuriousagency\\listingsource\\Listingsource",
         "components": {
             "services": "kuriousagency\\listingsource\\services\\ListingsourceService"
