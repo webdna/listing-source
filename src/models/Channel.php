@@ -13,7 +13,8 @@ class Channel extends ElementLink
     // Private
     // =========================================================================
 
-    private $_channel;
+	private $_channel;
+	private $_entryType;
 
     // Static
     // =========================================================================
@@ -30,14 +31,23 @@ class Channel extends ElementLink
     {
         if(is_null($this->_channel))
         {
-            $this->_channel = Craft::$app->sections()->getSectionById((int) $this->value);
+            $this->_channel = Craft::$app->sections->getSectionById((int) explode(':',$this->value)[0]);
         }
         return $this->_channel;
-    }
+	}
+	
+	public function getEntryType()
+	{
+		if(is_null($this->_entryType))
+        {
+            $this->_entryType = Craft::$app->sections->getEntryTypeById((int) explode(':',$this->value)[1]);
+        }
+        return $this->_entryType;
+	}
 
     public static function inputTemplatePath(): string
     {
-        return 'listingsource/types/input/_select';
+        return 'listingsource/types/input/_channel';
     }
 
 }
