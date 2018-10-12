@@ -34,4 +34,13 @@ class Category extends ElementLink
         }
         return $this->_category;
     }
+
+    public function getCategoryHandle()
+    {
+        if(is_null($this->_category))
+        {
+            $this->_category = Craft::$app->getCategories()->getCategoryById((int) $this->value);
+        }
+        return $this->_category->group->handle;
+    }
 }
