@@ -24,7 +24,13 @@ class Category extends ElementLink
     }
 
     // Public Methods
-    // =========================================================================
+	// =========================================================================
+	
+	public function getItems()
+	{
+		$criteria = CraftCategory::find()->parentId($this->getCategory()->id);
+		return $criteria;
+	}
 
     public function getCategory()
     {

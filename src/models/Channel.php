@@ -25,7 +25,13 @@ class Channel extends ElementLink
     }
 
     // Public Methods
-    // =========================================================================
+	// =========================================================================
+	
+	public function getItems()
+	{
+		$criteria = CraftChannel::find()->section($this->getChannel());
+		return $criteria;
+	}
 
     public function getChannel()
     {

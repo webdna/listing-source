@@ -4,7 +4,7 @@
     id: name ~ link.type|id ~ '-value',
     name: name ~ '[values]['~ link.type ~']',
     options: options,
-    value: currentLink.channel.id,
+    value: currentLink.channel.id ?? null,
 } %}
 
 
@@ -54,7 +54,7 @@
 			{% set types = types|merge([{value:entryType.id, label:entryType.name}]) %}
 		{% endfor %}
 
-		{% set isSelected = (currentLink.channel and currentLink.channel.id == option.value) or (not currentLink.channel and loop.first) %}
+		{% set isSelected = currentLink ? (currentLink.channel and currentLink.channel.id == option.value) or (not currentLink.channel and loop.first) : false %}
 		
 		{# name:name ~ '[values]['~ link.type ~'-'~option.value~'-customText]',  #}
 		{% embed "_includes/forms/select" with config|merge({
@@ -62,7 +62,7 @@
 			class:'entrytype '~(not isSelected ? 'hidden' : ''),
 			options: types,
 			option: option,
-			value: currentLink.entryType ? currentLink.entryType.id : null,
+			value: currentLink.entryType.id ?? null,
 		}) only %}{% block attr %}id="channel-{{ option.value }}"{% endblock %}{% endembed %}
 
 		{% endfor %}

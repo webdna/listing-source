@@ -24,7 +24,13 @@ class Group extends ElementLink
     }
 
     // Public Methods
-    // =========================================================================
+	// =========================================================================
+	
+	public function getItems()
+	{
+		$criteria = CraftCategory::find()->group($this->getGroup());
+		return $criteria;
+	}
 
     public function getGroup()
     {

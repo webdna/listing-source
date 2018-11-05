@@ -11,7 +11,7 @@ use kuriousagency\listingsource\events\RegisterLinkTypesEvent;
 use kuriousagency\listingsource\models\Entry;
 use kuriousagency\listingsource\models\Category;
 // use kuriousagency\listingsource\models\User;
-// use kuriousagency\listingsource\models\Product;
+use kuriousagency\listingsource\models\Product;
 // use kuriousagency\listingsource\models\Twitter;
 // use kuriousagency\listingsource\models\Facebook;
 // use kuriousagency\listingsource\models\LinkedIn;
@@ -56,10 +56,10 @@ class ListingsourceService extends Component
         // $linkTypes[] = new User();
 
         // Product link
-        // if(Craft::$app->getPlugins()->getPlugin('commerce'))
-        // {
-        //     $linkTypes[] = new Product();
-        // }
+        if(Craft::$app->getPlugins()->getPlugin('commerce'))
+        {
+            $linkTypes[] = new Product();
+        }
 
         // MJ added 
         $linkTypes[] = new Channel();

@@ -24,7 +24,13 @@ class Entry extends ElementLink
     }
 
     // Public Methods
-    // =========================================================================
+	// =========================================================================
+	
+	public function getItems()
+	{
+		$criteria = CraftEntry::find()->parentId($this->getEntry()->id);
+		return $criteria;
+	}
 
     public function getEntry()
     {
