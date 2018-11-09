@@ -4,7 +4,7 @@
     id: name ~ link.type|id ~ '-value',
     name: name ~ '[values]['~ link.type ~']',
     options: options,
-    value: currentLink.channel.id ?? null,
+    value: currentLink.section.id ?? null,
 } %}
 
 
@@ -41,7 +41,7 @@
             {% endif %}
         </div>
     {% endif %}
-	{% set prefix = name~'-channel-' %}
+	{% set prefix = name~'-section-' %}
     <div class="input {{ orientation }}{% if errors %} errors{% endif %}">
         {{ forms.select(config|merge({
 			class:'channel',
@@ -55,8 +55,10 @@
 			{% set types = types|merge([{value:entryType.id, label:entryType.name}]) %}
 		{% endfor %}
 
-		{% set isSelected = currentLink ? (currentLink.channel and currentLink.channel.id == option.value) or (not currentLink.channel and loop.first) : (loop.first ? true : false) %}
-		{# {% set isSelected = false %} #}
+		
+
+		{% set isSelected = currentLink ? (currentLink.section and currentLink.section.id == option.value) or (not currentLink.section and loop.first) : (loop.first ? true : false) %}
+		{% set isSelected = false %}
 		{# name:name ~ '[values]['~ link.type ~'-'~option.value~'-customText]',  #}
 		{% embed "_includes/forms/select" with config|merge({
 			name:name ~ '[entryTypes]['~ link.type ~']['~option.value~']', 
@@ -65,7 +67,7 @@
 			option: option,
 			value: currentLink.entryType.id ?? null,
 			prefix:prefix
-		}) only %}{% block attr %}id="{{ prefix~option.value }}"{% endblock %}{% endembed %}
+		}) only %}{% block attr %}id="{{prefix~option.value}}"{% endblock %}{% endembed %}
 
 		{% endfor %}
     </div>
