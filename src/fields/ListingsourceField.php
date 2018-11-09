@@ -12,6 +12,7 @@ use kuriousagency\listingsource\base\Link;
 use kuriousagency\listingsource\models\Entry;
 use kuriousagency\listingsource\models\Category;
 use kuriousagency\listingsource\models\Channel;
+use kuriousagency\listingsource\models\Section;
 use kuriousagency\listingsource\models\Group;
 // use kuriousagency\listingsource\models\Asset;
 // use kuriousagency\listingsource\models\Product;
@@ -90,8 +91,7 @@ class ListingsourceField extends Field
 
     public function normalizeValue($value, ElementInterface $element = null)
     {
-		//Craft::dd($value);
-		if($value instanceof Link)
+        if($value instanceof Link)
         {
             return $value;
         }
@@ -112,8 +112,8 @@ class ListingsourceField extends Field
         {
             if(isset($value['values']))
             {
-				$postedValue = $value['values'][$value['type']] ?? '';
-				$value['value'] = is_array($postedValue) ? $postedValue[0] : $postedValue;
+                $postedValue = $value['values'][$value['type']] ?? '';
+                $value['value'] = is_array($postedValue) ? $postedValue[0] : $postedValue;
                 unset($value['values']);
 			}
 			if(isset($value['entryTypes']))
@@ -121,7 +121,6 @@ class ListingsourceField extends Field
 				$postedValue = $value['entryTypes'][$value['type']] ?? '';
 				$value['value'] .= ':'.(is_array($postedValue) ? $postedValue[$value['value']] : $postedValue);
 			}
-			//Craft::dd($value);
 
             $link = $this->_getLinkTypeModelByType($value['type']);
             $link->setAttributes($value, false); // TODO: Get Rules added for these and remove false
@@ -135,7 +134,7 @@ class ListingsourceField extends Field
         $serialized = [];
         if($value instanceof Link)
         {
-			$serialized = [
+            $serialized = [
                 'type' => $value->type,
                 'value' => $value->value,
                 'customText' => $value->customText,
@@ -177,7 +176,8 @@ class ListingsourceField extends Field
         ]);
         $view->registerJs('new Garnish.ListingsourceField('.$jsVariables.');');
 
-        // Render the input template
+		// Render the input template
+		//Craft::dd($this);
         return $view->renderTemplate(
             'listingsource/fields/_input',
             [

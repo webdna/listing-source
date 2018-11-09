@@ -6,22 +6,22 @@ use Craft;
 use kuriousagency\listingsource\Listingsource;
 use kuriousagency\listingsource\base\ElementLink;
 
-use craft\elements\Entry as CraftChannel;
+use craft\elements\Entry as CraftSection;
 
-class Channel extends ElementLink
+class Section extends ElementLink
 {
     // Private
     // =========================================================================
 
-	private $_channel;
+	private $_section;
 	private $_entryType;
 
     // Static
-	// =========================================================================
+    // =========================================================================
 
     public static function elementType()
     {
-        return CraftChannel::class;
+        return CraftSection::class;
     }
 
     // Public Methods
@@ -29,17 +29,17 @@ class Channel extends ElementLink
 	
 	public function getItems()
 	{
-		$criteria = CraftChannel::find()->section($this->getChannel());
+		$criteria = CraftSection::find()->section($this->getSection());
 		return $criteria;
 	}
 
-    public function getChannel()
+    public function getSection()
     {
-        if(is_null($this->_channel))
+        if(is_null($this->_section))
         {
-            $this->_channel = Craft::$app->sections->getSectionById((int) $this->value);
+            $this->_section = Craft::$app->sections->getSectionById((int) $this->value);
         }
-        return $this->_channel;
+        return $this->_section;
 	}
 	
 	public function getEntryType()
@@ -53,7 +53,7 @@ class Channel extends ElementLink
 
     public static function inputTemplatePath(): string
     {
-        return 'listingsource/types/input/_channel';
+        return 'listingsource/types/input/_section';
     }
 
 }

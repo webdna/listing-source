@@ -11,13 +11,14 @@ use kuriousagency\listingsource\events\RegisterLinkTypesEvent;
 use kuriousagency\listingsource\models\Entry;
 use kuriousagency\listingsource\models\Category;
 // use kuriousagency\listingsource\models\User;
-use kuriousagency\listingsource\models\Product;
+// use kuriousagency\listingsource\models\Product;
 // use kuriousagency\listingsource\models\Twitter;
 // use kuriousagency\listingsource\models\Facebook;
 // use kuriousagency\listingsource\models\LinkedIn;
 // use kuriousagency\listingsource\models\Instagram;
 
 use kuriousagency\listingsource\models\Channel; 
+use kuriousagency\listingsource\models\Section; 
 use kuriousagency\listingsource\models\Group; 
 
 use Craft;
@@ -56,13 +57,14 @@ class ListingsourceService extends Component
         // $linkTypes[] = new User();
 
         // Product link
-        if(Craft::$app->getPlugins()->getPlugin('commerce'))
-        {
-            $linkTypes[] = new Product();
-        }
+        // if(Craft::$app->getPlugins()->getPlugin('commerce'))
+        // {
+        //     $linkTypes[] = new Product();
+        // }
 
         // MJ added 
-        $linkTypes[] = new Channel();
+		$linkTypes[] = new Channel();
+		$linkTypes[] = new Section();
         $linkTypes[] = new Group();
 
         // Third Party
@@ -128,21 +130,22 @@ class ListingsourceService extends Component
         $options = [];
         $optionNames = [];
 
-        $type = $sourceType == "entry" ? "structure" : $sourceType;
+		$type = $sourceType == "entry" ? "structure" : $sourceType;
 
-        $channels = Craft::$app->sections->getAllSections();
+        $sections = Craft::$app->sections->getAllSections();
         
-        foreach ($channels as $source) {
+        foreach ($sections as $source) {
 
             // Make sure it's not a heading
-            if ($source->type == $type) {
+            if (($type == 'section' && $source->type != 'single') || $source->type == $type) {
                 $options[] = [
                     'label' => $source->name,
                     'value' => $source->id
                 ];
                 $optionNames[] = $source->name;
             }
-        }
+		}
+		//Craft::dd($options);
 
         array_multisort($optionNames, SORT_NATURAL | SORT_FLAG_CASE, $options);
 

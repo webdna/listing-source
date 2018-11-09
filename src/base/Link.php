@@ -119,7 +119,7 @@ abstract class Link extends SavableComponent implements LinkInterface
         $elementSettings['sources'] = $elementSettings['sources'] == "" ? "*" : $elementSettings['sources'];
 
         // craft::dd($elementSettings);     
-        if( ($this->getTypeHandle() == "channel") || ($this->getTypeHandle() == "entry") ) {
+        if( ($this->getTypeHandle() == "channel") || ($this->getTypeHandle() == "entry") || ($this->getTypeHandle() == "section") ) {
             
             $entries = [];
             $sections = Craft::$app->sections->getAllSections();            
@@ -135,7 +135,13 @@ abstract class Link extends SavableComponent implements LinkInterface
                 }
                 if($section->type == 'structure'){
                     if($elementSettings['sources'] == '*' || in_array($section->id, $elementSettings['sources'])){
-                        $entries[] = 'section:'.$section->id;
+						$entries[] = 'section:'.$section->id;
+						if ($this->getTypeHandle() == "section") {
+							$options[] = [
+								'label' => $section->name,
+								'value' => $section->id,
+							];
+						}
                     }
                 }
             }
@@ -157,7 +163,7 @@ abstract class Link extends SavableComponent implements LinkInterface
         }
         
         //display channels
-        if(($this->getTypeHandle() == "group") || ($this->getTypeHandle() == "channel")) {            
+        if(($this->getTypeHandle() == "group") || ($this->getTypeHandle() == "channel") || ($this->getTypeHandle() == "section")) {            
 
             return Craft::$app->getView()->renderTemplate(
                 static::inputTemplatePath(),
