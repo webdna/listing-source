@@ -30,6 +30,9 @@ class Section extends ElementLink
 	public function getItems()
 	{
 		$criteria = CraftSection::find()->section($this->getSection());
+		if ($type = $this->getEntryType()) {
+			$criteria->type($type);
+		}
 		return $criteria;
 	}
 

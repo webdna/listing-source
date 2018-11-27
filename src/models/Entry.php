@@ -28,7 +28,7 @@ class Entry extends ElementLink
 	
 	public function getItems()
 	{
-		$criteria = CraftEntry::find()->parentId($this->getEntry()->id);
+		$criteria = CraftEntry::find()->descendantOf($this->getEntry()->id)->descendantDist(1);
 		return $criteria;
 	}
 
