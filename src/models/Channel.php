@@ -30,6 +30,9 @@ class Channel extends ElementLink
 	public function getItems()
 	{
 		$criteria = CraftChannel::find()->section($this->getChannel());
+		if ($type = $this->getEntryType()) {
+			$criteria->type($type);
+		}
 		return $criteria;
 	}
 
