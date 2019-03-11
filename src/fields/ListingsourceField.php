@@ -121,6 +121,7 @@ class ListingsourceField extends Field
 				$postedValue = $value['entryTypes'][$value['type']] ?? '';
 				$value['value'] .= ':'.(is_array($postedValue) ? $postedValue[$value['value']] : $postedValue);
 			}
+			$value['value'] = implode(':', array_filter(explode(':',$value['value'])));
 
             $link = $this->_getLinkTypeModelByType($value['type']);
             $link->setAttributes($value, false); // TODO: Get Rules added for these and remove false
