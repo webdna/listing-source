@@ -3,7 +3,7 @@
 	"description": "Craft CMS listing source plugin",
 	"type": "craft-plugin",
 	"minimum-stability": "dev",
-	"version": "v1.2.1",
+	"version": "1.2.2",
 	"keywords": [
 		"craft",
 		"cms",
