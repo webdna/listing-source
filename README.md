@@ -1,6 +1,6 @@
 # Listing Source plugin for Craft CMS 3.x
 
-This plugin adds a custom fieldtype which enables support for listing entry structures, entry channels, categories and category groups.
+listing entries, categories, etc.
 
 ![Screenshot](resources/img/plugin-logo.png)
 
@@ -18,27 +18,26 @@ To install the plugin, follow these instructions.
 
 2. Then tell Composer to load the plugin:
 
-        composer require KuriousAgency/listingsource
+        composer require listing-source/listing-source
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Lists
+3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Listing Source.
 
-## Lists Overview
-
--Insert text here-
-
-## Configuring Lists
+## Listing Source Overview
 
 -Insert text here-
 
-## Using Lists
+## Configuring Listing Source
 
 -Insert text here-
 
-## Lists Roadmap
+## Using Listing Source
+
+-Insert text here-
+
+## Listing Source Roadmap
 
 Some things to do, and ideas for potential features:
 
 * Release it
 
 Brought to you by [Kurious Agency](https://kurious.agency)
-

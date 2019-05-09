@@ -1,0 +1,44 @@
+/**
+ * Listing Source plugin for Craft CMS
+ *
+ * ListingSourceField Field CSS
+ *
+ * @author    Kurious Agency
+ * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://kurious.agency
+ * @package   ListingSource
+ * @since     2.0.0
+ */
+.listingsource-options > .flex {
+	margin-bottom: 8px;
+}
+.listingsource-options .flex > * {
+	margin-bottom: 0;
+}
+.listingsource .flex .field {
+	margin: 0;
+}
+.listingsource .flex .flex-grow {
+	margin: 0;
+}
+.listingsource--total {
+	margin-top: 0;
+}
+.listingsource-options h5 {
+	width: 6rem;
+	margin-bottom: 0;
+}
+.listingsource-options small.instructions {
+	color: #8f98a3;
+	font-size: 0.8rem;
+	margin-bottom: 0;
+}
+.listingsource-options .sticky {
+	align-items: start;
+}
+.listingsource-options .sticky h5 {
+	padding-top: 7px;
+}
+.listingsource-options .sticky .instructions {
+	padding-top: 7px;
+}
