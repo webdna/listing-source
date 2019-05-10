@@ -1,56 +1,96 @@
 <?php
+/**
+ * Listing Source plugin for Craft CMS 3.x
+ *
+ * listing entries, categories, etc.
+ *
+ * @link      https://kurious.agency
+ * @copyright Copyright (c) 2019 Kurious Agency
+ */
+
 namespace kuriousagency\listingsource;
 
-use kuriousagency\listingsource\fields\ListingsourceField;
-use kuriousagency\listingsource\services\ListingsourceService;
+use kuriousagency\listingsource\services\ListingSourceService;
+use kuriousagency\listingsource\fields\ListingSourceField;
 
 use Craft;
 use craft\base\Plugin;
-use yii\base\Event;
-
+use craft\services\Plugins;
 use craft\events\PluginEvent;
+use craft\services\Fields;
 use craft\events\RegisterComponentTypesEvent;
 
-use craft\services\Plugins;
-use craft\services\Fields;
+use yii\base\Event;
 
-class Listingsource extends Plugin
+/**
+ * Class ListingSource
+ *
+ * @author    Kurious Agency
+ * @package   ListingSource
+ * @since     2.0.0
+ *
+ */
+class ListingSource extends Plugin
 {
     // Static Properties
     // =========================================================================
 
+    /**
+     * @var ListingSource
+     */
     public static $plugin;
+
+    // Public Properties
+    // =========================================================================
+
+    /**
+     * @var string
+     */
+    public $schemaVersion = '2.0.0';
 
     // Public Methods
     // =========================================================================
 
-    public $schemaVersion = '1.0.7.1';
-
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
-
-        self::$plugin = $this;
-
-        $this->setComponents([
-            'service' => ListingsourceService::class,
+		self::$plugin = $this;
+		
+		$this->setComponents([
+            'service' => ListingSourceService::class,
         ]);
 
-        Event::on(Fields::className(), Fields::EVENT_REGISTER_FIELD_TYPES, function (RegisterComponentTypesEvent $event) {
-            $event->types[] = ListingsourceField::class;
-        });
-
-        Event::on(Plugins::className(), Plugins::EVENT_AFTER_INSTALL_PLUGIN, function (PluginEvent $event) {
-            if ($event->plugin === $this)
-            {
+        Event::on(
+            Fields::class,
+            Fields::EVENT_REGISTER_FIELD_TYPES,
+            function (RegisterComponentTypesEvent $event) {
+                $event->types[] = ListingSourceField::class;
             }
-        });
+        );
+
+        Event::on(
+            Plugins::class,
+            Plugins::EVENT_AFTER_INSTALL_PLUGIN,
+            function (PluginEvent $event) {
+                if ($event->plugin === $this) {
+                }
+            }
+        );
 
         Craft::info(
-            Craft::t('listingsource', '{name} plugin loaded', [
-                'name' => $this->name
-            ]),
+            Craft::t(
+                'listingsource',
+                '{name} plugin loaded',
+                ['name' => $this->name]
+            ),
             __METHOD__
         );
     }
+
+    // Protected Methods
+    // =========================================================================
+
 }

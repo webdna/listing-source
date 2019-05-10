@@ -1,0 +1,54 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.selectField({
+    id: id,
+    name: name,
+    options: options,
+    value: value ?? '',
+}) }}
+
+{% js %}
+	if (typeof listingSource == 'undefined') { listingSource = {sticky:{},type:{}} }
+	listingSource.type[{{ id|namespaceInputId|json_encode|raw }}] = {
+		reset: function(value){
+			//console.log({{ type|json_encode|raw }})
+			//console.log(value == {{ type|json_encode|raw }})
+			if (value == {{ type|json_encode|raw }}) {
+				$('#{{ id|namespaceInputId }}').trigger('change');
+			}
+			listingSource.sticky[{{ namespacedId|json_encode|raw }}].empty();
+		}
+	}
+	$('#{{ id|namespaceInputId }}').off('change').on('change', function(e){
+		var $target = $('#{{ namespacedId~'-attribute' }}');
+		//console.log($target)
+		var value = {{ value|json_encode|raw }};
+
+		Craft.postActionRequest('listingsource/default/attributes', {
+			handle: {{ namespacedId|json_encode|raw }},
+			type: {{ class|json_encode|raw }},
+			value: e.target.value
+		}, function(data){
+			$target.find('option').remove();
+			var sel = {{ attribute|json_encode|raw }};
+			$.each(data, function(key){
+				var s = '';
+				if (key == sel) {
+					s = 'selected';
+				}
+				$target.append($('<option value="'+key+'" '+s+'>'+this+'</option>'))
+			})
+		});
+
+		Craft.postActionRequest('listingsource/default/sticky', {
+			handle: {{ namespacedId|json_encode|raw }},
+			type: {{ class|json_encode|raw }},
+			value: e.target.value
+		}, function(data){
+			listingSource.sticky[{{ namespacedId|json_encode|raw }}].set(data.elementType, data.criteria, data.sources);
+		});
+	})
+	{% if selected is defined and selected %}
+	$('#{{ id|namespaceInputId }}').trigger('change');
+	{% endif %}
+{% endjs %}

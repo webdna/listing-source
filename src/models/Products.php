@@ -15,7 +15,8 @@ use kuriousagency\listingsource\ListingSource;
 use Craft;
 use craft\base\Model;
 use craft\base\ElementInterface;
-use craft\elements\Entry as CraftSection;
+use craft\elements\Category as CraftCategory;
+use craft\commerce\elements\Product as CraftProduct;
 use craft\helpers\Json;
 use craft\validators\ArrayValidator;
 
@@ -24,7 +25,7 @@ use craft\validators\ArrayValidator;
  * @package   ListingSource
  * @since     2.0.0
  */
-class Section extends Model
+class Products extends Model
 {
     // Public Properties
     // =========================================================================
@@ -49,7 +50,7 @@ class Section extends Model
 
 	public function getName()
 	{
-		return 'Section';
+		return 'Product Category';
 	}
 	
 	public function getType()
@@ -65,7 +66,7 @@ class Section extends Model
 
 	public function getElementType()
 	{
-		return CraftSection::class;
+		return CraftCategory::class;
 	}
 
 	public function hasSettings()
@@ -77,7 +78,7 @@ class Section extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
-				$this->_element = Craft::$app->getSections()->getSectionById((int) $this->realValue);
+				$this->_element = Craft::$app->getCategories()->getCategoryById((int) $this->realValue);
 			}
 		}
 		return $this->_element;
@@ -85,7 +86,7 @@ class Section extends Model
 
 	public function getItemType()
 	{
-		return $this->element->handle;
+		return 'product';
 	}
 
 	public function getRealValue()
@@ -106,7 +107,7 @@ class Section extends Model
 	public function getStickyElements()
 	{
 		if ($this->sticky) {
-			$query = CraftSection::find();
+			$query = CraftProduct::find();
 			$query->id = $this->sticky;
 			return $query;
 		}
@@ -130,7 +131,7 @@ class Section extends Model
 	public function getParent()
 	{
 		if (!$this->_parent) {
-			$this->_parent = $this->getElement() ? $this->getElement() : null;
+			$this->_parent = $this->getElement() ? $this->getElement()->group : null;
 		}
 
 		return $this->_parent;
@@ -138,12 +139,8 @@ class Section extends Model
 
 	public function getItems($criteria = null, $featured=false)
 	{
-		$query = CraftSection::find();
-		$query->sectionId = $this->getElement()->id;
-		
-		if($this->getElement()->type == 'structure') {
-			$query->level = 1;
-		}
+		$query = CraftProduct::find();
+		$query->relatedTo = $this->getElement()->id;
 		
 		$query->limit = null;
 		if ($this->total) {
@@ -162,7 +159,7 @@ class Section extends Model
 			$query->limit = null;
 			$ids = $query->ids();
 
-			$query = CraftSection::find();
+			$query = CraftProduct::find();
 			if ($this->total) {
 				$query->limit = $this->total;
 			}
@@ -180,11 +177,10 @@ class Section extends Model
 	public function getSourceOptions($sources=[])
 	{
 		$types = [];
-		$criteria = CraftSection::find();
+		$criteria = CraftProduct::find();
 		if ($sources != '*') {
-			$criteria->section = $sources;
+			$criteria->group = $sources;
 		}
-
 
 		foreach ($criteria->all() as $type)
 		{
@@ -199,38 +195,34 @@ class Section extends Model
 	public function getSourceAttributes($model)
 	{
 		/*if ($group) {
-			$group = Craft::$app->getSections()->getSectionByHandle($group);
-		} else {*/
-			$group = $model->getElement() ? $model->getElement()->entryTypes[0] : null;
-		//}
-
-		$attributes = [];
-		if($this->getElement()->type == 'structure') {
-			$attributes['userDefined'] = 'User Defined';
-		}
+			$group = Craft::$app->getCategories()->getGroupByHandle($group);
+		} else {
+			$group = $this->getElement() ? $this->getElement()->group : null;
+		}*/
 		
-		$attributes = array_merge($attributes, [
+		$attributes = [
+			//'userDefined' => 'User Defined',
 			'title' => 'Title',
 			'postDate' => 'Date',
-		]);
-		if ($group) {
+			'defaultPrice' => 'Price',
+		];
+		/*if ($group) {
 			foreach ($group->fields as $field)
 			{
-				//Craft::dump(get_class($field));
 				$attributes[$field->handle] = $field->name;
 			}
-		}
+		}*/
 		return $attributes;
 	}
 
 	public function getSourceTypes()
 	{
 		$types = [];
-		foreach (Craft::$app->getSections()->getAllSections() as $type)
+		foreach (Craft::$app->getCategories()->getAllGroups() as $type)
 		{
-			$types[$type->id] = [
+			$types[] = [
 				'label' => $type->name,
-				'value' => $type->id,
+				'value' => $type->uid,
 				'handle' => $type->handle,
 			];
 		}
@@ -252,17 +244,11 @@ class Section extends Model
 		$elementSettings = $settings['types'][$this->class];
 		$sources = $elementSettings['sources'] == "" ? "*" : $elementSettings['sources'];
 
-		$types = $this->sourceTypes;
-
-		//Craft::dd($types);
-
 		if ($sources != '*') {
 			foreach ($sources as $key => $source)
 			{
-				$sources[$key] = $types[$source];
+				$sources[$key] = 'group:'.$source;
 			}
-		} else {
-			$sources = $types;
 		}
 		
 		$jsonVars = [
@@ -273,21 +259,23 @@ class Section extends Model
             ];
         $jsonVars = Json::encode($jsonVars);
 		$view->registerJs("$('#{$namespacedId}-field').ListingSourceField(" . $jsonVars . ");");
-		//Craft::dump($model);
+		
 		// Render the input template
         return $view->renderTemplate(
-            'listingsource/_components/types/input/_group',
-			[
-				'name' => $field->handle.'[value]['.$this->type.']',
-				'id' => $id.'-'.str_replace("\\","-",$this->type).'-select',
+            'listingsource/_components/types/input/_element',
+            [
+                'name' => $field->handle.'[value]['.$this->type.']',
 				'value' => $this->realValue,
-				'options' => $sources,
-				'namespacedId' => $namespacedId,
+				'elements' => [$this->getElement()],
+				'elementType' => CraftCategory::class,
 				'type' => $this->type,
 				'class' => $this->class,
+				'sources' => $sources == '*' ? null : $sources,
+                'id' => $id.'-'.str_replace("\\","-",$this->type).'-element',
+				'namespacedId' => $namespacedId,
 				'selected' => $selected,
 				'attribute' => $model->attribute ?? null,
-			]
+            ]
         );
 	}
 
@@ -295,11 +283,13 @@ class Section extends Model
 	{
 		$view = Craft::$app->getView();
 
-		return [
-			'elementType' => CraftSection::class,
-			'sources' => ['section:'.($model->element->uid ?? 'null')],
-			'criteria' => $this->getElement()->type == 'structure' ? ['level'=>1] : [],
+		$params = [
+			'elementType' => CraftProduct::class,
+			'sources' => null,//['group:'.($this->element->group->uid ?? 'null')],
+			'criteria' => ['relatedTo'=>($model->element->id ?? null)],
 		];
+
+		return $params;
 	}
 
 	public function rules()
@@ -314,7 +304,7 @@ class Section extends Model
 	{
 		$errors = [];
 		if (!$this->realValue && (($attribute && $attribute == 'value') || !$attribute)) {
-			$errors['value'] = ['Please select a section'];
+			$errors['value'] = ['Please select a product category'];
 		}
 		return $errors;
 	}

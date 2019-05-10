@@ -1,0 +1,203 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * Listing Source plugin for Craft CMS 3.x
+ *
+ * ListingSourceField Field Input
+ *
+ * @author    Kurious Agency
+ * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://kurious.agency
+ * @package   ListingSource
+ * @since     2.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+<div class="listingsource">
+	{# sourceType, type, option #}
+	<div class="flex">
+	<h5>Source:</h5>
+	<div class="flex">
+			{{ forms.selectField({
+				id: id ~ '-type',
+				name: name ~ '[type]',
+				fieldClass: 'listingsource--type',
+				options: field.sourceTypesAsOptions,
+				value: model.type ?? '',
+				toggle: true,
+				targetPrefix: name ~ '-'
+			}) }}
+		
+		<div class="flex-grow">
+			<input type="hidden" name="{{ name~'[value]' }}" value="" >
+			{% for type in field.sourceTypes %}
+				{% set isCurrentType = model and model.type == type.type %}
+				<div id="{{ name }}-{{ type.type|id }}" class="listingsource--value {{ not isCurrentType ? 'hidden' }}">
+					{{ type.getInputHtml(field, model, isCurrentType)|raw }}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	</div>
+	{% set errors = element.getErrors(field.handle~'.value') ?? [] %}
+	{{ forms.errorList(errors) }}
+	<a href="#" class="fieldtoggle" data-target="{{ id }}-options" onClick="return false;">Options</a>
+	<div id="{{ id }}-options" class="listingsource-options hidden">
+<div class="flex">
+	<h5>Ordering:</h5>
+<div class="flex">
+		{{ forms.selectField({
+				id: id ~ '-attribute',
+				name: name ~ '[attribute]',
+				fieldClass: 'listingsource--attribute',
+				options: [],
+				value: model.attribute ?? '',
+			}) }}
+<div class="flex-grow">
+		{{ forms.selectField({
+				id: id ~ '-order',
+				name: name ~ '[order]',
+				fieldClass: 'listingsource--order',
+				options: [
+					{'label': 'Ascending', 'value':'ASC'},
+					{'label': 'Descending', 'value':'DESC'},
+				],
+				value: model.order ?? '',
+			}) }}
+			</div>
+			</div>
+		{# <input type="hidden" name="{{ name~'[attribute]' }}" value="" > #}
+		
+		{# {% for type in field.sourceTypes %}
+			{% for option in type.sourceTypes %}
+			{% set isCurrentType = model and model.type == type.type and (model.parent.uid is defined ? model.parent.uid == option.value) %}
+			<div id="{{ id }}-{{ type.type|id }}-attribute-{{ option.handle|id }}" data-id="{{ id }}-{{ type.type|id }}-attribute-{{ option.value }}" class="listingsource--attribute {{ not isCurrentType ? 'hidden' }}">
+				{{ type.getOptionsHtml(field, model, option)|raw }}
+			</div>
+			{% endfor %}
+		{% endfor %} #}
+		{# <input type="hidden" name="{{ name~'[sources]' }}" value="" > #}
+</div>
+	
+	<div class="flex">
+	<h5>Total:</h5>
+	{{ forms.textField({
+		id: id~'-total',
+		name: name~'[total]',
+		fieldClass: 'listingsource--total',
+		value: model.total ?? '',
+		type: 'number',
+		step: 1,
+		min: 0,
+		size: 3,
+	}) }}
+	<small class="instructions">Leave empty to show all.</small>
+	</div>
+
+	<div class="flex">
+		<h5>Pagination:</h5>
+		{{ forms.lightSwitchField({
+			id: id~'-pagination',
+			name: name~'[pagination]',
+			fieldClass: 'listingsource--pagination',
+			on: model.pagination ?? false,
+		}) }}
+	</div>
+
+	<div class="flex">
+		<h5>Featured:</h5>
+		{{ forms.lightSwitchField({
+			id: id~'-featured',
+			name: name~'[featured]',
+			fieldClass: 'listingsource--featured',
+			on: model.featured ?? false,
+		}) }}
+		<small class="instructions">The first item in the list will show as the featured item.</small>
+	</div>
+
+	<div class="flex sticky">
+		<h5>Sticky:</h5>
+		<div>
+		{% if name is defined and name %}
+			<input type="hidden" name="{{ name }}[sticky]" value="" >
+		{% endif -%}
+
+		{% set elements = model ? model.stickyElements : [] %}
+
+		<div id="{{ id }}-sticky" class="elementselect"
+				{%- if block('attr') is defined %} {{ block('attr') }}{% endif %}>
+			<div class="elements">
+				{% for element in elements %}
+					{% include "_elements/element" with {
+						context: 'field',
+						size: 'small'
+					} %}
+				{% endfor %}
+			</div>
+
+			<div class="btn add icon dashed">{{ "Choose"|t('app') }}</div>
+		</div>
+		</div>
+		<small class="instructions">These items will always appear first in the list.</small>
+	</div>
+
+	
+
+	{% js %}
+	$('#{{id|namespaceInputId ~ '-type'}}').on('change', function(e){
+		var val = this.value;
+		//console.log(val)
+		$.each(listingSource.type, function(){
+			this.reset(val);
+		})
+	});
+
+	if (typeof listingSource == 'undefined') { listingSource = {sticky:{},type:{}} }
+
+	listingSource.sticky[{{ id|namespaceInputId|json_encode|raw }}] = {
+		modal: null,
+		empty: function(){
+			if (this.modal) {
+				var self = this;
+				this.modal.getElements().each(function(){
+					self.modal.removeElement($(this));
+				});
+				this.modal.disableAddElementsBtn();
+			}
+		},
+		set: function(elementType, criteria, sources, id){
+			if (this.modal) {
+				this.modal.modal = null;
+				this.modal.settings.elementType = elementType;
+				this.modal.settings.criteria = criteria;
+				this.modal.settings.sources = sources;
+				this.modal.enableAddElementsBtn();
+			} else {
+				this.modal = new Craft.BaseElementSelectInput({
+					id: '{{ id|namespaceInputId }}-sticky',
+					name: '{{ name|namespaceInputName }}[sticky]',
+					elementType: elementType,
+					sources: sources,
+					criteria: criteria,
+					sourceElementId: null,
+					viewMode: 'list',
+					limit: null,
+					showSiteMenu: false,
+					modalStorageKey: null,
+					fieldId: '{{ namespacedId }}',
+					sortable: true
+				});
+			}
+		},
+	};
+
+	{% if model.value is defined %}
+		{% set stickyParams = model.getStickyParams('{{ namespacedId }}', model) %}
+		listingSource.sticky[{{ id|namespaceInputId|json_encode|raw }}].set({{ stickyParams.elementType|json_encode|raw }}, {{ stickyParams.criteria|json_encode|raw }}, {{ stickyParams.sources|json_encode|raw }});
+	{% endif %}
+{% endjs %}
+</div>
+
+</div>

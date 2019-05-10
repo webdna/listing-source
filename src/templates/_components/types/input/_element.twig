@@ -1,0 +1,94 @@
+{% import "_includes/forms" as forms %}
+
+
+{% if name is defined and name %}
+    {# <input type="hidden" name="{{ name }}" value="" > #}
+{% endif -%}
+
+{% set elements = (elements is defined and elements ? elements : []) -%}
+{% set sourceElementId = (sourceElementId is defined and sourceElementId ? sourceElementId : null) -%}
+
+<div id="{{ id }}" class="elementselect"
+        {%- if block('attr') is defined %} {{ block('attr') }}{% endif %}>
+    <div class="elements">
+        {% for element in elements %}
+            {% include "_elements/element" with {
+                context: 'field',
+                size: 'small'
+            } %}
+        {% endfor %}
+    </div>
+
+    <div class="btn add icon dashed">{{ "Choose"|t('app') }}</div>
+</div>
+
+{% js %}
+	if (typeof listingSource == 'undefined') { listingSource = {sticky:{},type:{}} }
+
+    listingSource.type[{{ id|namespaceInputId|json_encode|raw }}] = {
+		modal: new Craft.BaseElementSelectInput({
+			id: {{ id|namespaceInputId|json_encode|raw }},
+			name: {{ name|namespaceInputName|json_encode|raw }},
+			elementType: {{ elementType|json_encode|raw }},
+			sources: {{ sources|json_encode|raw }},
+			criteria: {{ {siteId:null, status:null, enabledForSite:false}|json_encode|raw }},
+			sourceElementId: {{ sourceElementId|json_encode|raw }},
+			viewMode: 'list',
+			limit: 1,
+			showSiteMenu: false,
+			modalStorageKey: null,
+			fieldId: null,
+			sortable: true,
+			onSelectElements: function(e){
+				var self = this;
+				this.attributes = $('#{{ namespacedId~'-attribute' }}');
+				//console.log('{{ namespacedId~'-attribute' }}')
+				var value = {{ value|json_encode|raw }};
+				{# if (!this.parent) {
+					this.parent = $target.parent();
+				}
+				this.parent.find('.listingsource--attribute').addClass('hidden');
+				$target.removeClass('hidden').find('select').prop('disabled', false); #}
+				Craft.postActionRequest('listingsource/default/attributes', {
+					handle: {{ namespacedId|json_encode|raw }},
+					type: {{ class|json_encode|raw }},
+					value: e ? e[0].id : value
+				}, function(data){
+					self.attributes.find('option').remove();
+					var sel = {{ attribute|json_encode|raw }};
+					$.each(data, function(key){
+						var s = '';
+						if (key == sel) {
+							s = 'selected';
+						}
+						self.attributes.append($('<option value="'+key+'" '+s+'>'+this+'</option>'))
+					})
+				});
+				Craft.postActionRequest('listingsource/default/sticky', {
+					handle: {{ namespacedId|json_encode|raw }},
+					type: {{ class|json_encode|raw }},
+					value: e ? e[0].id : value
+				}, function(data){
+					listingSource.sticky[{{ namespacedId|json_encode|raw }}].set(data.elementType, data.criteria, data.sources);
+				});
+			},
+			onRemoveElements: function(e){
+				//$('#{{id|namespaceInputId}}').parents('.listingsource').find('.listingsource--attribute').addClass('hidden').find('select').prop('disabled', true);
+				this.attributes.find('option').remove();
+				listingSource.sticky[{{ namespacedId|json_encode|raw }}].empty()
+			}
+		}),
+		reset: function(){
+			var self = this;
+			this.modal.getElements().each(function(){
+				self.modal.removeElement($(this));
+			});
+			//console.log('reset')
+			$('#{{ namespacedId~'-attribute' }}').find('option').remove();
+		}
+	}
+	{% if selected is defined and selected %}
+	listingSource.type[{{ id|namespaceInputId|json_encode|raw }}].modal.onSelectElements();
+	{% endif %}
+
+{% endjs %}
