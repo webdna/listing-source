@@ -239,12 +239,13 @@ class ListingSourceField extends Field
 		if (!$type) {
 			return null;
 		}
-		//$type = "\\kuriousagency\\listingsource\\models\\".$type;
-		//Craft::dd($type);
-		//$type = sprintf('kuriousagency\listingsource\models\%s', $type);
+		$pluginsService = Craft::$app->getPlugins();
 		$model = new $type();
 		if ($value) {
 			$model->setAttributes($value, false);
+		}
+		if ($model->type == 'Products' && (!$pluginsService->isPluginInstalled('commerce') || !$pluginsService->isPluginEnabled('commerce'))) {
+			return null;
 		}
 		return $model;
 	}
@@ -261,7 +262,10 @@ class ListingSourceField extends Field
 
 		foreach ($this->types as $key => $settings)
 		{
-			$types[] = $this->getModelByType($key, $settings);
+			$type = $this->getModelByType($key, $settings);
+			if ($type) {
+				$types[] = $type;
+			}
 		}
 
 		return $types;

@@ -38,12 +38,15 @@ class ListingSourceService extends Component
      */
     public function getSourceTypes()
     {
+		$pluginsService = Craft::$app->getPlugins();
 		$types = [];
 		
 		$types[] = new Category();
 		$types[] = new Entry();
 		$types[] = new Group();
+		if ($pluginsService->isPluginInstalled('commerce') && $pluginsService->isPluginEnabled('commerce')) {
 		$types[] = new Products();
+		}
 		$types[] = new Section();
 		$types[] = new User();
 

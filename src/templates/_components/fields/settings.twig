@@ -36,7 +36,7 @@
 {% for sourceType in field.allSourceTypes %}
 
 	{% set name = 'types['~sourceType.class~']' %}
-	{% set isEnabled = field.types[sourceType.type].enabled ?? false %}
+	{% set isEnabled = field.types[sourceType.class].enabled ?? false %}
 
 	{{ forms.lightSwitchField({
 		id: sourceType.type|id,
