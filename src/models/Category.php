@@ -83,6 +83,12 @@ class Category extends Model
 		return $this->_element;
 	}
 
+	public function getItemType()
+	{
+		return 'category';
+		//return $this->element->group->handle;
+	}
+
 	public function getRealValue()
 	{
 		if (is_array($this->value)) {
@@ -103,10 +109,23 @@ class Category extends Model
 		if ($this->sticky) {
 			$query = CraftCategory::find();
 			$query->id = $this->sticky;
-			return $query->all();
+			return $query;
 		}
 
-		return [];
+		return null;
+	}
+
+	public function getFeaturedItem()
+	{
+		if ($this->featured) {
+			if ($this->sticky) {
+				return $this->stickyElements;
+			}
+
+			return $this->getItems(null, true);
+		}
+
+		return null;
 	}
 
 	public function getParent()
@@ -118,7 +137,7 @@ class Category extends Model
 		return $this->_parent;
 	}
 
-	public function getItems($criteria = null)
+	public function getItems($criteria = null, $featured=false)
 	{
 		$query = CraftCategory::find();
 		$query->descendantOf = $this->getElement()->id;
@@ -133,18 +152,21 @@ class Category extends Model
 		} else if ($this->order == 'desc') {
 			$query->inReverse = true;
 		}
+		if (!$featured && $this->featured && !$this->sticky) {
+			$query->offset = 1;
+		}
 		if ($this->sticky) {
 			$query->id = array_merge(['not'], $this->sticky);
-			if ($this->total) {
-				$query->limit = $this->total - count($this->sticky);
-			}
+			$query->limit = null;
 			$ids = $query->ids();
 
 			$query = CraftCategory::find();
 			if ($this->total) {
 				$query->limit = $this->total;
 			}
-			$query->id = array_merge($this->sticky, $ids);
+			$sticky = $this->sticky;
+			unset($sticky[0]);
+			$query->id = array_merge($sticky, $ids);
 			$query->fixedOrder = true;
 		}
 		if ($criteria) {
