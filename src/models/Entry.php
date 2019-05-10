@@ -183,7 +183,7 @@ class Entry extends Model
 		$attributes = [
 			'userDefined' => 'User Defined',
 			'title' => 'Title',
-			'dateCreated' => 'Date',
+			'postDate' => 'Date',
 		];
 		if ($group) {
 			foreach ($group->fields as $field)

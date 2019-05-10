@@ -181,7 +181,7 @@ class Products extends Model
 		$attributes = [
 			//'userDefined' => 'User Defined',
 			'title' => 'Title',
-			'dateCreated' => 'Date',
+			'postDate' => 'Date',
 			'defaultPrice' => 'Price',
 		];
 		/*if ($group) {
