@@ -122,8 +122,12 @@ class Section extends Model
 	{
 		$query = CraftSection::find();
 		$query->sectionId = $this->getElement()->id;
-		$query->level = 1;
 		
+		if($this->getElement()->type == 'structure') {
+			$query->level = 1;
+		}
+		
+		$query->limit = null;
 		if ($this->total) {
 			$query->limit = $this->total;
 		}
@@ -178,12 +182,16 @@ class Section extends Model
 		} else {*/
 			$group = $model->getElement() ? $model->getElement()->entryTypes[0] : null;
 		//}
+
+		$attributes = [];
+		if($this->getElement()->type == 'structure') {
+			$attributes['userDefined'] = 'User Defined';
+		}
 		
-		$attributes = [
-			'userDefined' => 'User Defined',
+		$attributes = array_merge($attributes, [
 			'title' => 'Title',
 			'postDate' => 'Date',
-		];
+		]);
 		if ($group) {
 			foreach ($group->fields as $field)
 			{
@@ -269,7 +277,7 @@ class Section extends Model
 		return [
 			'elementType' => CraftSection::class,
 			'sources' => ['section:'.($model->element->uid ?? 'null')],
-			'criteria' => ['level'=>1],
+			'criteria' => $this->getElement()->type == 'structure' ? ['level'=>1] : [],
 		];
 	}
 

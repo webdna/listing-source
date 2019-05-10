@@ -124,6 +124,7 @@ class Entry extends Model
 		$query->descendantOf = $this->getElement()->id;
 		$query->descendantDist = 1;
 		
+		$query->limit = null;
 		if ($this->total) {
 			$query->limit = $this->total;
 		}

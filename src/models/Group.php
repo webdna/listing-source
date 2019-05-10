@@ -124,6 +124,7 @@ class Group extends Model
 		$query->groupId = $this->getElement()->id;
 		$query->level = 1;
 		
+		$query->limit = null;
 		if ($this->total) {
 			$query->limit = $this->total;
 		}

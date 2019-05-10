@@ -123,6 +123,7 @@ class User extends Model
 		$query = CraftUser::find();
 		$query->groupId = $this->getElement()->id;
 		
+		$query->limit = null;
 		if ($this->total) {
 			$query->limit = $this->total;
 		}

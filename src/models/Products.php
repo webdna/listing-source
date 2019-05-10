@@ -124,6 +124,7 @@ class Products extends Model
 		$query = CraftProduct::find();
 		$query->relatedTo = $this->getElement()->id;
 		
+		$query->limit = null;
 		if ($this->total) {
 			$query->limit = $this->total;
 		}

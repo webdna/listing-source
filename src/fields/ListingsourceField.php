@@ -145,7 +145,8 @@ class ListingSourceField extends Field
 
 		if (isset($value['type']) && $value['type'] != '') {
 
-			$model = $this->getModelByType($value['type'], $value);
+			$value['type'] = str_replace("kuriousagency\\listingsource\\models\\", '', $value['type']);
+			$model = $this->getModelByType("kuriousagency\\listingsource\\models\\".$value['type'], $value);
 			//Craft::dump($model->getParent());
 		}
 		//Craft::dump($value);
