@@ -41,6 +41,12 @@ class ListingSourceField extends Field
 
 	public $types;
 	public $sources;
+
+	// legacy
+	public $selectLinkText;
+	public $allowCustomText;
+	public $defaultText;
+	public $allowTarget;
 	
 	private $_availableTypes;
 
