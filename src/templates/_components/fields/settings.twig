@@ -48,15 +48,14 @@
 
 	{% if sourceType.hasSettings %}
 		<div id="{{ sourceType.type|id }}-settings" class="{{ not isEnabled ? 'hidden' }}">
-		
 		{{ forms.checkboxSelectField({
 			label: "Sources"|t('listingsource'),
 			instructions: "Which sources do you want to select {type} from?"|t('listingsource', { type: sourceType.name|lower }),
 			id: sourceType.type|id~'-sources',
 			name: name~'[sources]',
 			options: sourceType.sourceTypes,
-			values: field.types[sourceType.type].sources ?? '*',
-			errors: field.getErrors(sourceType.type),
+			values: field.types[sourceType.class].sources ?? '*',
+			errors: field.getErrors(sourceType.class),
 			showAllOption: true,
 		}) }}
 				
