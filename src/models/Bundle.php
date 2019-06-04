@@ -87,7 +87,7 @@ class Bundle extends Model
 
 	public function getItemType()
 	{
-		return 'product';
+		return 'bundle';
 	}
 
 	public function getRealValue()
