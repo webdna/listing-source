@@ -18,6 +18,7 @@ use kuriousagency\listingsource\models\Group;
 use kuriousagency\listingsource\models\Products;
 use kuriousagency\listingsource\models\Section;
 use kuriousagency\listingsource\models\User;
+use kuriousagency\listingsource\models\Bundle;
 
 use Craft;
 use craft\base\Component;
@@ -46,6 +47,9 @@ class ListingSourceService extends Component
 		$types[] = new Group();
 		if ($pluginsService->isPluginInstalled('commerce') && $pluginsService->isPluginEnabled('commerce')) {
 		$types[] = new Products();
+		}
+		if ($pluginsService->isPluginInstalled('commerce-bundles') && $pluginsService->isPluginEnabled('commerce-bundles')) {
+		$types[] = new Bundle();
 		}
 		$types[] = new Section();
 		$types[] = new User();

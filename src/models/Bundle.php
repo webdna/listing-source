@@ -16,6 +16,8 @@ use Craft;
 use craft\base\Model;
 use craft\base\ElementInterface;
 use craft\elements\Category as CraftCategory;
+//use craft\commerce\elements\Product as CraftProduct;
+use kuriousagency\commerce\bundles\elements\Bundle as CraftBundle;
 use craft\helpers\Json;
 use craft\validators\ArrayValidator;
 
@@ -24,7 +26,7 @@ use craft\validators\ArrayValidator;
  * @package   ListingSource
  * @since     2.0.0
  */
-class Category extends Model
+class Bundle extends Model
 {
     // Public Properties
     // =========================================================================
@@ -49,7 +51,7 @@ class Category extends Model
 
 	public function getName()
 	{
-		return 'Category';
+		return 'Bundle Category';
 	}
 	
 	public function getType()
@@ -85,8 +87,7 @@ class Category extends Model
 
 	public function getItemType()
 	{
-		return 'category';
-		//return $this->element->group->handle;
+		return 'product';
 	}
 
 	public function getRealValue()
@@ -107,7 +108,7 @@ class Category extends Model
 	public function getStickyElements()
 	{
 		if ($this->sticky) {
-			$query = CraftCategory::find();
+			$query = CraftBundle::find();
 			$query->id = $this->sticky;
 			return $query;
 		}
@@ -139,9 +140,8 @@ class Category extends Model
 
 	public function getItems($criteria = null, $featured=false)
 	{
-		$query = CraftCategory::find();
-		$query->descendantOf = $this->getElement()->id;
-		$query->descendantDist = 1;
+		$query = CraftBundle::find();
+		$query->relatedTo = $this->getElement()->id;
 		
 		$query->limit = null;
 		if ($this->total) {
@@ -160,7 +160,7 @@ class Category extends Model
 			$query->limit = null;
 			$ids = $query->ids();
 
-			$query = CraftCategory::find();
+			$query = CraftBundle::find();
 			if ($this->total) {
 				$query->limit = $this->total;
 			}
@@ -169,7 +169,6 @@ class Category extends Model
 				unset($sticky[0]);
 			}
 			$query->id = array_merge($sticky, $ids);
-			//Craft::dd($query->id);
 			$query->fixedOrder = true;
 		}
 		if ($criteria) {
@@ -181,7 +180,7 @@ class Category extends Model
 	public function getSourceOptions($sources=[])
 	{
 		$types = [];
-		$criteria = CraftCategory::find();
+		$criteria = CraftBundle::find();
 		if ($sources != '*') {
 			$criteria->group = $sources;
 		}
@@ -200,21 +199,22 @@ class Category extends Model
 	{
 		/*if ($group) {
 			$group = Craft::$app->getCategories()->getGroupByHandle($group);
-		} else {*/
-			$group = $model->getElement() ? $model->getElement()->group : null;
-		//}
+		} else {
+			$group = $this->getElement() ? $this->getElement()->group : null;
+		}*/
 		
 		$attributes = [
-			'userDefined' => 'User Defined',
+			//'userDefined' => 'User Defined',
 			'title' => 'Title',
-			'dateCreated' => 'Date',
+			'postDate' => 'Date',
+			'price' => 'Price',
 		];
-		if ($group) {
+		/*if ($group) {
 			foreach ($group->fields as $field)
 			{
 				$attributes[$field->handle] = $field->name;
 			}
-		}
+		}*/
 		return $attributes;
 	}
 
@@ -225,7 +225,7 @@ class Category extends Model
 		{
 			$types[] = [
 				'label' => $type->name,
-				'value' => $type->id,
+				'value' => $type->uid,
 				'handle' => $type->handle,
 			];
 		}
@@ -236,7 +236,6 @@ class Category extends Model
 	{
 		$view = Craft::$app->getView();
 
-		//Craft::dd($model);
 		if ($model && $model->type == $this->type) {
 			$this->value = $model->value ?? null;
 		}
@@ -263,7 +262,7 @@ class Category extends Model
             ];
         $jsonVars = Json::encode($jsonVars);
 		$view->registerJs("$('#{$namespacedId}-field').ListingSourceField(" . $jsonVars . ");");
-		//Craft::dump($model);
+		
 		// Render the input template
         return $view->renderTemplate(
             'listingsource/_components/types/input/_element',
@@ -287,11 +286,13 @@ class Category extends Model
 	{
 		$view = Craft::$app->getView();
 
-		return [
-			'elementType' => CraftCategory::class,
-			'sources' => ['group:'.($model->element->group->uid ?? 'null')],
-			'criteria' => ['descendantOf'=>($model->element->id ?? null), 'descendantDist'=>1],
+		$params = [
+			'elementType' => CraftBundle::class,
+			'sources' => null,//['group:'.($this->element->group->uid ?? 'null')],
+			'criteria' => ['relatedTo'=>($model->element->id ?? null)],
 		];
+
+		return $params;
 	}
 
 	public function rules()
@@ -306,7 +307,7 @@ class Category extends Model
 	{
 		$errors = [];
 		if (!$this->realValue && (($attribute && $attribute == 'value') || !$attribute)) {
-			$errors['value'] = ['Please select a category'];
+			$errors['value'] = ['Please select a bundle category'];
 		}
 		return $errors;
 	}
@@ -314,7 +315,7 @@ class Category extends Model
 	public function serializeValue($value, ElementInterface $element = null)
     {
 		return [
-			'type' => get_class($this),
+			'type' => $this->getType(),
 			'value' => $this->value,
 			'attribute' => $this->attribute,
 			'order' => $this->order,

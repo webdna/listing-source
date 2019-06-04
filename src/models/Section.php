@@ -167,7 +167,9 @@ class Section extends Model
 				$query->limit = $this->total;
 			}
 			$sticky = $this->sticky;
-			unset($sticky[0]);
+			if ($this->featured) {
+				unset($sticky[0]);
+			}
 			$query->id = array_merge($sticky, $ids);
 			$query->fixedOrder = true;
 		}

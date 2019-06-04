@@ -132,7 +132,8 @@
 				{% for element in elements %}
 					{% include "_elements/element" with {
 						context: 'field',
-						size: 'small'
+						size: 'small',
+						name: name~'[sticky]'
 					} %}
 				{% endfor %}
 			</div>
@@ -167,7 +168,7 @@
 				this.modal.disableAddElementsBtn();
 			}
 		},
-		set: function(elementType, criteria, sources, id){
+		set: function(elementType, criteria, sources){
 			if (this.modal) {
 				this.modal.modal = null;
 				this.modal.settings.elementType = elementType;
@@ -195,6 +196,8 @@
 
 	{% if model.value is defined %}
 		{% set stickyParams = model.getStickyParams('{{ namespacedId }}', model) %}
+		console.log({{ id|namespaceInputId|json_encode|raw }})
+		console.log({{ model|json_encode|raw }})
 		listingSource.sticky[{{ id|namespaceInputId|json_encode|raw }}].set({{ stickyParams.elementType|json_encode|raw }}, {{ stickyParams.criteria|json_encode|raw }}, {{ stickyParams.sources|json_encode|raw }});
 	{% endif %}
 {% endjs %}
