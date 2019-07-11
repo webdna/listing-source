@@ -108,6 +108,7 @@ class Section extends Model
 		if ($this->sticky) {
 			$query = CraftSection::find();
 			$query->id = $this->sticky;
+			$query->fixedOrder();
 			return $query;
 		}
 

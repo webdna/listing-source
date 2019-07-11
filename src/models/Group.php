@@ -108,6 +108,7 @@ class Group extends Model
 		if ($this->sticky) {
 			$query = CraftCategory::find();
 			$query->id = $this->sticky;
+			$query->fixedOrder();
 			return $query;
 		}
 

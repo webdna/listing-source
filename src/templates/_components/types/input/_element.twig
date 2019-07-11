@@ -85,7 +85,7 @@
 				self.modal.removeElement($(this));
 			});
 			//console.log('reset')
-			$('#{{ namespacedId~'-attribute' }}').find('option').remove();
+			$('#{{ id|namespaceInputId~'-attribute' }}').find('option').remove();
 		}
 	}
 	{% if selected is defined and selected %}

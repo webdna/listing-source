@@ -109,6 +109,7 @@ class Products extends Model
 		if ($this->sticky) {
 			$query = CraftProduct::find();
 			$query->id = $this->sticky;
+			$query->fixedOrder();
 			return $query;
 		}
 

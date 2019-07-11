@@ -108,6 +108,7 @@ class User extends Model
 		if ($this->sticky) {
 			$query = CraftUser::find();
 			$query->id = $this->sticky;
+			$query->fixedOrder();
 			return $query;
 		}
 

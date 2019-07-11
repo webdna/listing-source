@@ -110,6 +110,7 @@ class Bundle extends Model
 		if ($this->sticky) {
 			$query = CraftBundle::find();
 			$query->id = $this->sticky;
+			$query->fixedOrder();
 			return $query;
 		}
 

@@ -108,6 +108,7 @@ class Entry extends Model
 		if ($this->sticky) {
 			$query = CraftEntry::find();
 			$query->id = $this->sticky;
+			$query->fixedOrder();
 			return $query;
 		}
 
