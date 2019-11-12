@@ -31,7 +31,7 @@
 			name: {{ name|namespaceInputName|json_encode|raw }},
 			elementType: {{ elementType|json_encode|raw }},
 			sources: {{ sources|json_encode|raw }},
-			criteria: {{ {siteId:null, status:null, enabledForSite:false}|json_encode|raw }},
+			criteria: {{ {status:null, enabledForSite:true}|json_encode|raw }},
 			sourceElementId: {{ sourceElementId|json_encode|raw }},
 			viewMode: 'list',
 			limit: 1,
