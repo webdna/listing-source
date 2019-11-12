@@ -77,7 +77,8 @@ class Group extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
-				$this->_element = Craft::$app->getCategories()->getGroupById((int) $this->realValue);
+				//$this->_element = Craft::$app->getCategories()->getGroupById((int) $this->realValue);
+				$this->_element = CraftCategory::find()->id($this->realValue)->site('*')->one();
 			}
 		}
 		return $this->_element;
@@ -108,6 +109,7 @@ class Group extends Model
 		if ($this->sticky) {
 			$query = CraftCategory::find();
 			$query->id = $this->sticky;
+			$query->site('*');
 			$query->fixedOrder();
 			return $query;
 		}

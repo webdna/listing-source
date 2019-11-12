@@ -77,7 +77,8 @@ class Section extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
-				$this->_element = Craft::$app->getSections()->getSectionById((int) $this->realValue);
+				//$this->_element = Craft::$app->getSections()->getSectionById((int) $this->realValue);
+				$this->_element = CraftSection::find()->id($this->realValue)->site('*')->one();
 			}
 		}
 		return $this->_element;
@@ -108,6 +109,7 @@ class Section extends Model
 		if ($this->sticky) {
 			$query = CraftSection::find();
 			$query->id = $this->sticky;
+			$query->site('*');
 			$query->fixedOrder();
 			return $query;
 		}

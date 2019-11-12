@@ -79,7 +79,8 @@ class Bundle extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
-				$this->_element = Craft::$app->getCategories()->getCategoryById((int) $this->realValue);
+				$this->_element = CraftBundle::find()->id($this->realValue)->site('*')->one();
+				//$this->_element = Craft::$app->getCategories()->getCategoryById((int) $this->realValue);
 			}
 		}
 		return $this->_element;
@@ -110,6 +111,7 @@ class Bundle extends Model
 		if ($this->sticky) {
 			$query = CraftBundle::find();
 			$query->id = $this->sticky;
+			$query->site('*');
 			$query->fixedOrder();
 			return $query;
 		}
