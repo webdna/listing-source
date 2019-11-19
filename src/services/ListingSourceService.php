@@ -19,6 +19,7 @@ use kuriousagency\listingsource\models\Products;
 use kuriousagency\listingsource\models\Section;
 use kuriousagency\listingsource\models\User;
 use kuriousagency\listingsource\models\Bundle;
+use kuriousagency\listingsource\models\Related;
 
 use Craft;
 use craft\base\Component;
@@ -44,6 +45,7 @@ class ListingSourceService extends Component
 		
 		$types[] = new Category();
 		$types[] = new Entry();
+		$types[] = new Related();
 		$types[] = new Group();
 		if ($pluginsService->isPluginInstalled('commerce') && $pluginsService->isPluginEnabled('commerce')) {
 		$types[] = new Products();

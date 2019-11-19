@@ -21,6 +21,7 @@ use kuriousagency\listingsource\models\Products;
 use kuriousagency\listingsource\models\Section;
 use kuriousagency\listingsource\models\User;
 use kuriousagency\listingsource\models\Bundle;
+use kuriousagency\listingsource\models\Related;
 
 use Craft;
 use craft\base\ElementInterface;
@@ -137,7 +138,8 @@ class ListingSourceField extends Field
 			$value instanceof Products ||
 			$value instanceof Section ||
 			$value instanceof User ||
-			$value instanceof Bundle
+			$value instanceof Bundle ||
+			$value instanceof Related
 		) {
 			
 			return $value;
@@ -174,7 +176,8 @@ class ListingSourceField extends Field
 			$value instanceof Products ||
 			$value instanceof Section ||
 			$value instanceof User ||
-			$value instanceof Bundle
+			$value instanceof Bundle ||
+			$value instanceof Related
 		) {
 
 				//Craft::dd($value->serializeValue($value, $element));

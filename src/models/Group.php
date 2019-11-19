@@ -198,6 +198,16 @@ class Group extends Model
 		return $types;
 	}
 
+	public function setStickyValue($value)
+	{
+		$this->value[$this->type] = $value;
+	}
+
+	public function setAttributesValue($value)
+	{
+		$this->value[$this->type] = $value;
+	}
+
 	public function getSourceAttributes($model)
 	{
 		$group = $model->getElement() ? $model->getElement() : null;

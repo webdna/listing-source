@@ -198,6 +198,16 @@ class Bundle extends Model
 		return $types;
 	}
 
+	public function setStickyValue($value)
+	{
+		$this->value[$this->type] = $value;
+	}
+
+	public function setAttributesValue($value)
+	{
+		$this->value[$this->type] = $value;
+	}
+
 	public function getSourceAttributes($model)
 	{
 		/*if ($group) {
