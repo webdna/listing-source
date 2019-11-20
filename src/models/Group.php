@@ -77,8 +77,8 @@ class Group extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
-				//$this->_element = Craft::$app->getCategories()->getGroupById((int) $this->realValue);
-				$this->_element = CraftCategory::find()->id($this->realValue)->site('*')->one();
+				$this->_element = Craft::$app->getCategories()->getGroupById((int) $this->realValue);
+				//$this->_element = CraftCategory::find()->id($this->realValue)->site('*')->one();
 			}
 		}
 		return $this->_element;
@@ -200,12 +200,12 @@ class Group extends Model
 
 	public function setStickyValue($value)
 	{
-		$this->value[$this->type] = $value;
+		$this->value = $value;
 	}
 
 	public function setAttributesValue($value)
 	{
-		$this->value[$this->type] = $value;
+		$this->value = $value;
 	}
 
 	public function getSourceAttributes($model)

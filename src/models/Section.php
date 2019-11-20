@@ -77,8 +77,8 @@ class Section extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
-				//$this->_element = Craft::$app->getSections()->getSectionById((int) $this->realValue);
-				$this->_element = CraftSection::find()->id($this->realValue)->site('*')->one();
+				$this->_element = Craft::$app->getSections()->getSectionById((int) $this->realValue);
+				//$this->_element = CraftSection::find()->id($this->realValue)->site('*')->one();
 			}
 		}
 		return $this->_element;
@@ -203,12 +203,12 @@ class Section extends Model
 
 	public function setStickyValue($value)
 	{
-		$this->value[$this->type] = $value;
+		$this->value = $value;
 	}
 
 	public function setAttributesValue($value)
 	{
-		$this->value[$this->type] = $value;
+		$this->value = $value;
 	}
 
 	public function getSourceAttributes($model)

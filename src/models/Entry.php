@@ -199,12 +199,12 @@ class Entry extends Model
 
 	public function setStickyValue($value)
 	{
-		$this->value[$this->type] = $value;
+		$this->value = $value;
 	}
 
 	public function setAttributesValue($value)
 	{
-		$this->value[$this->type] = $value;
+		$this->value = $value;
 	}
 
 	public function getSourceAttributes($model)
