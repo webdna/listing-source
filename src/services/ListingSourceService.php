@@ -20,6 +20,7 @@ use kuriousagency\listingsource\models\Section;
 use kuriousagency\listingsource\models\User;
 use kuriousagency\listingsource\models\Bundle;
 use kuriousagency\listingsource\models\Related;
+use kuriousagency\listingsource\models\Event;
 
 use Craft;
 use craft\base\Component;
@@ -52,6 +53,9 @@ class ListingSourceService extends Component
 		}
 		if ($pluginsService->isPluginInstalled('commerce-bundles') && $pluginsService->isPluginEnabled('commerce-bundles')) {
 		$types[] = new Bundle();
+		}
+		if ($pluginsService->isPluginInstalled('events') && $pluginsService->isPluginEnabled('events')) {
+		$types[] = new Event();
 		}
 		$types[] = new Section();
 		$types[] = new User();

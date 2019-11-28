@@ -22,6 +22,7 @@ use kuriousagency\listingsource\models\Section;
 use kuriousagency\listingsource\models\User;
 use kuriousagency\listingsource\models\Bundle;
 use kuriousagency\listingsource\models\Related;
+use kuriousagency\listingsource\models\Event;
 
 use Craft;
 use craft\base\ElementInterface;
@@ -139,7 +140,8 @@ class ListingSourceField extends Field
 			$value instanceof Section ||
 			$value instanceof User ||
 			$value instanceof Bundle ||
-			$value instanceof Related
+			$value instanceof Related ||
+			$value instanceof Event
 		) {
 			
 			return $value;
@@ -177,7 +179,8 @@ class ListingSourceField extends Field
 			$value instanceof Section ||
 			$value instanceof User ||
 			$value instanceof Bundle ||
-			$value instanceof Related
+			$value instanceof Related ||
+			$value instanceof Event
 		) {
 
 				//Craft::dd($value->serializeValue($value, $element));
@@ -258,6 +261,9 @@ class ListingSourceField extends Field
 			$model->setAttributes($value, false);
 		}
 		if ($model->type == 'Products' && (!$pluginsService->isPluginInstalled('commerce') || !$pluginsService->isPluginEnabled('commerce'))) {
+			return null;
+		}
+		if ($model->type == 'Events' && (!$pluginsService->isPluginInstalled('events') || !$pluginsService->isPluginEnabled('events'))) {
 			return null;
 		}
 		return $model;
