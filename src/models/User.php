@@ -108,6 +108,7 @@ class User extends Model
 		if ($this->sticky) {
 			$query = CraftUser::find();
 			$query->id = $this->sticky;
+			$query->fixedOrder();
 			return $query;
 		}
 
@@ -163,7 +164,9 @@ class User extends Model
 				$query->limit = $this->total;
 			}
 			$sticky = $this->sticky;
-			unset($sticky[0]);
+			if ($this->featured) {
+				unset($sticky[0]);
+			}
 			$query->id = array_merge($sticky, $ids);
 			$query->fixedOrder = true;
 		}
@@ -190,6 +193,16 @@ class User extends Model
 			];
 		}
 		return $types;
+	}
+
+	public function setStickyValue($value)
+	{
+		$this->value = $value;
+	}
+
+	public function setAttributesValue($value)
+	{
+		$this->value = $value;
 	}
 
 	public function getSourceAttributes($model)

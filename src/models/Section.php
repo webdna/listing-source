@@ -78,6 +78,7 @@ class Section extends Model
 		if (!$this->_element) {
 			if ($this->value){
 				$this->_element = Craft::$app->getSections()->getSectionById((int) $this->realValue);
+				//$this->_element = CraftSection::find()->id($this->realValue)->site('*')->one();
 			}
 		}
 		return $this->_element;
@@ -108,6 +109,8 @@ class Section extends Model
 		if ($this->sticky) {
 			$query = CraftSection::find();
 			$query->id = $this->sticky;
+			$query->site('*');
+			$query->fixedOrder();
 			return $query;
 		}
 
@@ -167,7 +170,9 @@ class Section extends Model
 				$query->limit = $this->total;
 			}
 			$sticky = $this->sticky;
-			unset($sticky[0]);
+			if ($this->featured) {
+				unset($sticky[0]);
+			}
 			$query->id = array_merge($sticky, $ids);
 			$query->fixedOrder = true;
 		}
@@ -194,6 +199,16 @@ class Section extends Model
 			];
 		}
 		return $types;
+	}
+
+	public function setStickyValue($value)
+	{
+		$this->value = $value;
+	}
+
+	public function setAttributesValue($value)
+	{
+		$this->value = $value;
 	}
 
 	public function getSourceAttributes($model)

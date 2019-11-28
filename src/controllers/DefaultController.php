@@ -14,6 +14,7 @@ use kuriousagency\listingsource\ListingSource;
 
 use Craft;
 use craft\web\Controller;
+use craft\elements\Entry;
 
 /**
  * @author    Kurious Agency
@@ -46,9 +47,16 @@ class DefaultController extends Controller
 		$type = $request->getRequiredBodyParam('type');
 		$value = $request->getRequiredBodyParam('value');
 
+		if ($value == '*') {
+			return $this->asJson([
+				'elementType' => Entry::class,
+				'sources' => ['*'],
+				'criteria' => ['level'=>1],
+			]);
+		}
+
 		$model = new $type();
-		$model->value = $value;
-		//Craft::dd($model);
+		$model->setStickyValue($value);
 
 		return $this->asJson($model->getStickyParams($model));
 	}
@@ -59,8 +67,15 @@ class DefaultController extends Controller
 		$type = $request->getRequiredBodyParam('type');
 		$value = $request->getRequiredBodyParam('value');
 
+		if ($value == '*') {
+			return $this->asJson([
+				'title' => 'Title',
+				'postDate' => 'Date',
+			]);
+		}
+
 		$model = new $type();
-		$model->value = $value;
+		$model->setAttributesValue($value);
 
 		return $this->asJson($model->getSourceAttributes($model));
 	}

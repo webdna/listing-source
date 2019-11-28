@@ -1,0 +1,112 @@
+{% import "_includes/forms" as forms %}
+
+<div class="flex flex-nowrap">
+
+{{ forms.selectField({
+    id: section.id,
+    name: section.name,
+    options: section.options,
+    value: section.value ?? '',
+}) }}
+
+<span> to </span>
+
+{% set elements = (category.elements is defined and category.elements ? category.elements : []) -%}
+{% set sourceElementId = (category.sourceElementId is defined and category.sourceElementId ? category.sourceElementId : null) -%}
+{% for element in elements %}
+<input type="hidden" name="{{category.name}}[]" value="{{element.id}}">
+{% endfor %}
+<div id="{{ category.id }}" class="elementselect"
+        {%- if block('attr') is defined %} {{ block('attr') }}{% endif %}>
+    <div class="elements">
+        {% for element in elements %}
+            {% include "_elements/element" with {
+                context: 'field',
+                size: 'small'
+            } %}
+        {% endfor %}
+    </div>
+
+    <div class="btn add icon dashed">{{ "Choose"|t('app') }}</div>
+</div>
+
+</div>
+
+{% js %}
+	if (typeof listingSource == 'undefined') { listingSource = {sticky:{},type:{}} }
+
+	listingSource.type[{{ section.id|namespaceInputId|json_encode|raw }}] = {
+		reset: function(value){
+			//console.log({{ section.type|json_encode|raw }})
+			//console.log(value == {{ section.type|json_encode|raw }})
+			if (value == {{ section.type|json_encode|raw }}) {
+				$('#{{ section.id|namespaceInputId }}').trigger('change');
+			}
+			listingSource.sticky[{{ section.namespacedId|json_encode|raw }}].empty();
+		}
+	}
+	$('#{{ section.id|namespaceInputId }}').off('change').on('change', function(e){
+		var $target = $('#{{ section.namespacedId~'-attribute' }}');
+		//console.log($target)
+		var value = {{ section.value|json_encode|raw }};
+
+		Craft.postActionRequest('listingsource/default/attributes', {
+			handle: {{ section.namespacedId|json_encode|raw }},
+			type: {{ section.class|json_encode|raw }},
+			value: e.target.value
+		}, function(data){
+			$target.find('option').remove();
+			var sel = {{ section.attribute|json_encode|raw }};
+			$.each(data, function(key){
+				var s = '';
+				if (key == sel) {
+					s = 'selected';
+				}
+				$target.append($('<option value="'+key+'" '+s+'>'+this+'</option>'))
+			})
+		});
+
+		Craft.postActionRequest('listingsource/default/sticky', {
+			handle: {{ section.namespacedId|json_encode|raw }},
+			type: {{ section.class|json_encode|raw }},
+			value: e.target.value
+		}, function(data){
+			listingSource.sticky[{{ section.namespacedId|json_encode|raw }}].set(data.elementType, data.criteria, data.sources);
+		});
+	})
+	{% if section.selected is defined and section.selected %}
+	$('#{{ section.id|namespaceInputId }}').trigger('change');
+	{% endif %}
+
+	listingSource.type[{{ category.id|namespaceInputId|json_encode|raw }}] = {
+		modal: new Craft.BaseElementSelectInput({
+			id: {{ category.id|namespaceInputId|json_encode|raw }},
+			name: {{ category.name|namespaceInputName|json_encode|raw }},
+			elementType: {{ category.elementType|json_encode|raw }},
+			sources: {{ category.sources|json_encode|raw }},
+			criteria: {{ {siteId:null, status:null, enabledForSite:false}|json_encode|raw }},
+			sourceElementId: {{ sourceElementId|json_encode|raw }},
+			viewMode: 'list',
+			limit: 1,
+			showSiteMenu: false,
+			modalStorageKey: null,
+			fieldId: null,
+			sortable: true,
+			onRemoveElements: function(e){
+				//$('#{{category.id|namespaceInputId}}').parents('.listingsource').find('.listingsource--attribute').addClass('hidden').find('select').prop('disabled', true);
+				//this.attributes.find('option').remove();
+				//listingSource.sticky[{{ category.namespacedId|json_encode|raw }}].empty()
+			}
+		}),
+		reset: function(){
+			var self = this;
+			this.modal.getElements().each(function(){
+				self.modal.removeElement($(this));
+			});
+			//console.log('reset')
+			$('#{{ category.id|namespaceInputId~'-attribute' }}').find('option').remove();
+		}
+	}
+	//listingSource.type[{{ category.id|namespaceInputId|json_encode|raw }}].modal.resetElements();
+
+{% endjs %}

@@ -16,7 +16,8 @@ use Craft;
 use craft\base\Model;
 use craft\base\ElementInterface;
 use craft\elements\Category as CraftCategory;
-use craft\commerce\elements\Product as CraftProduct;
+//use craft\commerce\elements\Product as CraftProduct;
+use kuriousagency\commerce\bundles\elements\Bundle as CraftBundle;
 use craft\helpers\Json;
 use craft\validators\ArrayValidator;
 
@@ -25,7 +26,7 @@ use craft\validators\ArrayValidator;
  * @package   ListingSource
  * @since     2.0.0
  */
-class Products extends Model
+class Bundle extends Model
 {
     // Public Properties
     // =========================================================================
@@ -50,7 +51,7 @@ class Products extends Model
 
 	public function getName()
 	{
-		return 'Product Category';
+		return 'Bundle Category';
 	}
 	
 	public function getType()
@@ -78,8 +79,8 @@ class Products extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
+				$this->_element = CraftBundle::find()->id($this->realValue)->site('*')->one();
 				//$this->_element = Craft::$app->getCategories()->getCategoryById((int) $this->realValue);
-				$this->_element = CraftCategory::find()->id($this->realValue)->site('*')->one();
 			}
 		}
 		return $this->_element;
@@ -87,7 +88,7 @@ class Products extends Model
 
 	public function getItemType()
 	{
-		return 'product';
+		return 'bundle';
 	}
 
 	public function getRealValue()
@@ -108,7 +109,7 @@ class Products extends Model
 	public function getStickyElements()
 	{
 		if ($this->sticky) {
-			$query = CraftProduct::find();
+			$query = CraftBundle::find();
 			$query->id = $this->sticky;
 			$query->site('*');
 			$query->fixedOrder();
@@ -142,7 +143,7 @@ class Products extends Model
 
 	public function getItems($criteria = null, $featured=false)
 	{
-		$query = CraftProduct::find();
+		$query = CraftBundle::find();
 		$query->relatedTo = $this->getElement()->id;
 		
 		$query->limit = null;
@@ -162,7 +163,7 @@ class Products extends Model
 			$query->limit = null;
 			$ids = $query->ids();
 
-			$query = CraftProduct::find();
+			$query = CraftBundle::find();
 			if ($this->total) {
 				$query->limit = $this->total;
 			}
@@ -182,7 +183,7 @@ class Products extends Model
 	public function getSourceOptions($sources=[])
 	{
 		$types = [];
-		$criteria = CraftProduct::find();
+		$criteria = CraftBundle::find();
 		if ($sources != '*') {
 			$criteria->group = $sources;
 		}
@@ -219,7 +220,7 @@ class Products extends Model
 			//'userDefined' => 'User Defined',
 			'title' => 'Title',
 			'postDate' => 'Date',
-			'defaultPrice' => 'Price',
+			'price' => 'Price',
 		];
 		/*if ($group) {
 			foreach ($group->fields as $field)
@@ -299,7 +300,7 @@ class Products extends Model
 		$view = Craft::$app->getView();
 
 		$params = [
-			'elementType' => CraftProduct::class,
+			'elementType' => CraftBundle::class,
 			'sources' => null,//['group:'.($this->element->group->uid ?? 'null')],
 			'criteria' => ['relatedTo'=>($model->element->id ?? null)],
 		];
@@ -319,7 +320,7 @@ class Products extends Model
 	{
 		$errors = [];
 		if (!$this->realValue && (($attribute && $attribute == 'value') || !$attribute)) {
-			$errors['value'] = ['Please select a product category'];
+			$errors['value'] = ['Please select a bundle category'];
 		}
 		return $errors;
 	}

@@ -132,7 +132,8 @@
 				{% for element in elements %}
 					{% include "_elements/element" with {
 						context: 'field',
-						size: 'small'
+						size: 'small',
+						name: name~'[sticky]'
 					} %}
 				{% endfor %}
 			</div>
@@ -149,8 +150,10 @@
 	$('#{{id|namespaceInputId ~ '-type'}}').on('change', function(e){
 		var val = this.value;
 		//console.log(val)
-		$.each(listingSource.type, function(){
-			this.reset(val);
+		$.each(listingSource.type, function(key){
+			if(key.indexOf('{{id|namespaceInputId}}') != -1) {
+				this.reset(val);
+			}
 		})
 	});
 
@@ -167,7 +170,7 @@
 				this.modal.disableAddElementsBtn();
 			}
 		},
-		set: function(elementType, criteria, sources, id){
+		set: function(elementType, criteria, sources){
 			if (this.modal) {
 				this.modal.modal = null;
 				this.modal.settings.elementType = elementType;
@@ -184,7 +187,7 @@
 					sourceElementId: null,
 					viewMode: 'list',
 					limit: null,
-					showSiteMenu: false,
+					showSiteMenu: true,
 					modalStorageKey: null,
 					fieldId: '{{ namespacedId }}',
 					sortable: true
@@ -195,6 +198,8 @@
 
 	{% if model.value is defined %}
 		{% set stickyParams = model.getStickyParams('{{ namespacedId }}', model) %}
+		console.log({{ id|namespaceInputId|json_encode|raw }})
+		console.log({{ model|json_encode|raw }})
 		listingSource.sticky[{{ id|namespaceInputId|json_encode|raw }}].set({{ stickyParams.elementType|json_encode|raw }}, {{ stickyParams.criteria|json_encode|raw }}, {{ stickyParams.sources|json_encode|raw }});
 	{% endif %}
 {% endjs %}

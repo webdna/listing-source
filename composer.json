@@ -1,38 +1,40 @@
 {
-    "name": "kuriousagency/listing-source",
-    "description": "listing entries, categories, etc.",
-    "type": "craft-plugin",
-    "version": "2.0.2",
-    "keywords": [
-        "craft",
-        "cms",
-        "craftcms",
-        "craft-plugin",
-        "listing source"
-    ],
-    "support": {
-        "docs": "https://github.com/kuriousagency/listing-source/blob/master/README.md",
-        "issues": "https://github.com/kuriousagency/listing-source/issues"
-    },
-    "license": "MIT",
-    "authors": [{
-        "name": "Kurious Agency",
-        "homepage": "https://kurious.agency"
-    }],
-    "require": {
-        "craftcms/cms": "^3.0.0-RC1"
-    },
-    "autoload": {
-        "psr-4": {
-            "kuriousagency\\listingsource\\": "src/"
-        }
-    },
-    "extra": {
-        "name": "Listing Source",
-        "handle": "listingsource",
-        "hasCpSettings": false,
-        "hasCpSection": false,
-        "changelogUrl": "https://raw.githubusercontent.com/kuriousagency/listing-source/master/CHANGELOG.md",
-        "class": "kuriousagency\\listingsource\\ListingSource"
-    }
+	"name": "kuriousagency/listing-source",
+	"description": "listing entries, categories, etc.",
+	"type": "craft-plugin",
+	"version": "2.3.2",
+	"keywords": [
+		"craft",
+		"cms",
+		"craftcms",
+		"craft-plugin",
+		"listing source"
+	],
+	"support": {
+		"docs": "https://github.com/kuriousagency/listing-source/blob/master/README.md",
+		"issues": "https://github.com/kuriousagency/listing-source/issues"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Kurious Agency",
+			"homepage": "https://kurious.agency"
+		}
+	],
+	"require": {
+		"craftcms/cms": "^3.0.0-RC1"
+	},
+	"autoload": {
+		"psr-4": {
+			"kuriousagency\\listingsource\\": "src/"
+		}
+	},
+	"extra": {
+		"name": "Listing Source",
+		"handle": "listingsource",
+		"hasCpSettings": false,
+		"hasCpSection": false,
+		"changelogUrl": "https://raw.githubusercontent.com/kuriousagency/listing-source/master/CHANGELOG.md",
+		"class": "kuriousagency\\listingsource\\ListingSource"
+	}
 }

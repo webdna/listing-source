@@ -77,7 +77,8 @@ class Entry extends Model
 	{
 		if (!$this->_element) {
 			if ($this->value){
-				$this->_element = Craft::$app->getEntries()->getEntryById((int) $this->realValue);
+				//$this->_element = Craft::$app->getEntries()->getEntryById((int) $this->realValue);
+				$this->_element = CraftEntry::find()->id($this->realValue)->site('*')->one();
 			}
 		}
 		return $this->_element;
@@ -108,6 +109,8 @@ class Entry extends Model
 		if ($this->sticky) {
 			$query = CraftEntry::find();
 			$query->id = $this->sticky;
+			$query->site('*');
+			$query->fixedOrder();
 			return $query;
 		}
 
@@ -164,7 +167,9 @@ class Entry extends Model
 				$query->limit = $this->total;
 			}
 			$sticky = $this->sticky;
-			unset($sticky[0]);
+			if ($this->featured) {
+				unset($sticky[0]);
+			}
 			$query->id = array_merge($sticky, $ids);
 			$query->fixedOrder = true;
 		}
@@ -190,6 +195,16 @@ class Entry extends Model
 			];
 		}
 		return $types;
+	}
+
+	public function setStickyValue($value)
+	{
+		$this->value = $value;
+	}
+
+	public function setAttributesValue($value)
+	{
+		$this->value = $value;
 	}
 
 	public function getSourceAttributes($model)
