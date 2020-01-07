@@ -142,7 +142,10 @@ class Event extends Model
 
 	public function getItems($criteria = null, $featured=false)
 	{
+		$currentdate = Db::prepareDateForDb(new \DateTime());
 		$query = CraftEvent::find();
+		$query->status = ['live','expired'];
+		$query->endDate = '>= '.$currentdate;
 		$query->relatedTo = $this->getElement()->id;
 		
 		$query->limit = null;
