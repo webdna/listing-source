@@ -2,7 +2,7 @@
     "name": "kuriousagency/listing-source",
     "description": "listing entries, categories, etc.",
     "type": "craft-plugin",
-    "version": "2.4.1",
+    "version": "2.4.2",
     "keywords": [
         "craft",
         "cms",

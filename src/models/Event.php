@@ -19,6 +19,7 @@ use craft\elements\Category as CraftCategory;
 use verbb\events\elements\Event as CraftEvent;
 use craft\helpers\Json;
 use craft\validators\ArrayValidator;
+use craft\helpers\Db;
 
 /**
  * @author    Kurious Agency
