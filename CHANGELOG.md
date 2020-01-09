@@ -3,14 +3,27 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## 2.4.3 - 2020-01-09
+
+### Fixed
+
+-   Selecting bundle category
+
 ## 2.4.1 - 2020-01-07
+
 ### Added
-- Show events even if the listing has expired as long as the event hasn't finised yet.
+
+-   Show events even if the listing has expired as long as the event hasn't finised yet.
 
 ## 2.4.0 - 2019-12-03
+
 ### Added
-- Support for verbb/events listing
+
+-   Support for verbb/events listing
 
 ## 2.0.0 - 2019-05-01
+
 ### Added
-- Initial release
+
+-   Initial release
