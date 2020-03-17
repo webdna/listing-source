@@ -281,9 +281,11 @@ class ListingSourceField extends Field
 
 		foreach ($this->types as $key => $settings)
 		{
-			$type = $this->getModelByType($key, $settings);
-			if ($type) {
-				$types[] = $type;
+			if ($settings['enabled']) {
+				$type = $this->getModelByType($key, $settings);
+				if ($type) {
+					$types[] = $type;
+				}
 			}
 		}
 
