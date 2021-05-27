@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.4.5 - 2021-05-27
+### Fixed
+- Fixed a bug where the source attributes select field was not populated when a user had turned on the 'show field handles' preference.
+
 ## 2.4.4 - 2020-03-17
 ### Fixed
 -	Only show enabled sources

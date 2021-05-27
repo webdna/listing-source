@@ -41,7 +41,7 @@
 			sortable: true,
 			onSelectElements: function(e){
 				var self = this;
-				this.attributes = $('#{{ namespacedId~'-attribute' }}');
+				this.attributes = $('select#{{ namespacedId~'-attribute' }}');
 				//console.log('{{ namespacedId~'-attribute' }}')
 				var value = {{ value|json_encode|raw }};
 				{# if (!this.parent) {

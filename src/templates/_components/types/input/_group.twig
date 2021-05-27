@@ -20,7 +20,7 @@
 		}
 	}
 	$('#{{ id|namespaceInputId }}').off('change').on('change', function(e){
-		var $target = $('#{{ namespacedId~'-attribute' }}');
+		var $target = $('select#{{ namespacedId~'-attribute' }}');
 		//console.log($target)
 		var value = {{ value|json_encode|raw }};
 
