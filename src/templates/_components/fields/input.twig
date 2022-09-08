@@ -5,9 +5,9 @@
  *
  * ListingSourceField Field Input
  *
- * @author    Kurious Agency
- * @copyright Copyright (c) 2019 Kurious Agency
- * @link      https://kurious.agency
+ * @author    webdna
+ * @copyright Copyright (c) 2019 webdna
+ * @link      https://webdna.co.uk
  * @package   ListingSource
  * @since     2.0.0
  */
@@ -29,7 +29,7 @@
 				toggle: true,
 				targetPrefix: name ~ '-'
 			}) }}
-		
+
 		<div class="flex-grow">
 			<input type="hidden" name="{{ name~'[value]' }}" value="" >
 			{% for type in field.sourceTypes %}
@@ -69,7 +69,7 @@
 			</div>
 			</div>
 		{# <input type="hidden" name="{{ name~'[attribute]' }}" value="" > #}
-		
+
 		{# {% for type in field.sourceTypes %}
 			{% for option in type.sourceTypes %}
 			{% set isCurrentType = model and model.type == type.type and (model.parent.uid is defined ? model.parent.uid == option.value) %}
@@ -80,7 +80,7 @@
 		{% endfor %} #}
 		{# <input type="hidden" name="{{ name~'[sources]' }}" value="" > #}
 </div>
-	
+
 	<div class="flex">
 	<h5>Total:</h5>
 	{{ forms.textField({
@@ -144,7 +144,7 @@
 		<small class="instructions">These items will always appear first in the list.</small>
 	</div>
 
-	
+
 
 	{% js %}
 	$('#{{id|namespaceInputId ~ '-type'}}').on('change', function(e){

@@ -4,12 +4,12 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
 /**
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  */

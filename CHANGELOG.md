@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.4.6 - 2022-09-08
+- Change of ownership
+
 ## 2.4.5 - 2021-05-27
 ### Fixed
 - Fixed a bug where the source attributes select field was not populated when a user had turned on the 'show field handles' preference.

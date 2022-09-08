@@ -4,18 +4,18 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
-namespace kuriousagency\listingsource\assetbundles\settings;
+namespace webdna\listingsource\assetbundles\settings;
 
 use Craft;
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
 /**
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  */
@@ -29,7 +29,7 @@ class SettingsAsset extends AssetBundle
      */
     public function init()
     {
-        $this->sourcePath = "@kuriousagency/listingsource/assetbundles/settings/dist";
+        $this->sourcePath = "@webdna/listingsource/assetbundles/settings/dist";
 
         $this->depends = [
             CpAsset::class,

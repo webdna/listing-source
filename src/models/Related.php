@@ -4,13 +4,13 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
-namespace kuriousagency\listingsource\models;
+namespace webdna\listingsource\models;
 
-use kuriousagency\listingsource\ListingSource;
+use webdna\listingsource\ListingSource;
 
 use Craft;
 use craft\base\Model;
@@ -21,7 +21,7 @@ use craft\helpers\Json;
 use craft\validators\ArrayValidator;
 
 /**
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  */
@@ -52,7 +52,7 @@ class Related extends Model
 	{
 		return 'Related';
 	}
-	
+
 	public function getType()
 	{
 		//return get_class($this);
@@ -157,13 +157,13 @@ class Related extends Model
 		$query = Entry::find();
 		//Craft::dd($this->value);
 		$query->sectionId = $this->getElement('section')->id ?? null;
-		
+
 		if($this->getElement('section') && $this->getElement('section')->type == 'structure') {
 			$query->level = 1;
 		}
 
 		$query->relatedTo = [$this->getElement('category')];
-		
+
 		$query->limit = null;
 		if ($this->total) {
 			$query->limit = $this->total;
@@ -239,7 +239,7 @@ class Related extends Model
 		if($this->getElement('section')->type == 'structure') {
 			$attributes['userDefined'] = 'User Defined';
 		}
-		
+
 		$attributes = array_merge($attributes, [
 			'title' => 'Title',
 			'postDate' => 'Date',
@@ -282,7 +282,7 @@ class Related extends Model
 			//Craft::dd($model);
 			$this->value = $model->value ?? null;
 		}
-		
+
 		$id = $view->formatInputId($field->handle);
 		$namespacedId = $view->namespaceInputId($id);
 
@@ -302,7 +302,7 @@ class Related extends Model
 		} else {
 			$sources = $types;
 		}
-		
+
 		$jsonVars = [
             'id' => $id,
             'name' => $field->handle,
@@ -312,7 +312,7 @@ class Related extends Model
         $jsonVars = Json::encode($jsonVars);
 		$view->registerJs("$('#{$namespacedId}-field').ListingSourceField(" . $jsonVars . ");");
 		//if ($this->value) Craft::dd($this->getElement('category'));
-		
+
 		$elements = [];
 		if ($this->value) {
 			$elements = Category::find()->id($this->getRealValue('category'))->all();

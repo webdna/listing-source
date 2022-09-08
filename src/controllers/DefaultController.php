@@ -4,20 +4,20 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
-namespace kuriousagency\listingsource\controllers;
+namespace webdna\listingsource\controllers;
 
-use kuriousagency\listingsource\ListingSource;
+use webdna\listingsource\ListingSource;
 
 use Craft;
 use craft\web\Controller;
 use craft\elements\Entry;
 
 /**
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  */
@@ -60,7 +60,7 @@ class DefaultController extends Controller
 
 		return $this->asJson($model->getStickyParams($model));
 	}
-	
+
 	public function actionAttributes()
 	{
 		$request = Craft::$app->getRequest();

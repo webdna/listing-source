@@ -4,25 +4,25 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
-namespace kuriousagency\listingsource\fields;
+namespace webdna\listingsource\fields;
 
-use kuriousagency\listingsource\ListingSource;
-use kuriousagency\listingsource\assetbundles\field\FieldAsset;
-use kuriousagency\listingsource\assetbundles\settings\SettingsAsset;
+use webdna\listingsource\ListingSource;
+use webdna\listingsource\assetbundles\field\FieldAsset;
+use webdna\listingsource\assetbundles\settings\SettingsAsset;
 
-use kuriousagency\listingsource\models\Category;
-use kuriousagency\listingsource\models\Entry;
-use kuriousagency\listingsource\models\Group;
-use kuriousagency\listingsource\models\Products;
-use kuriousagency\listingsource\models\Section;
-use kuriousagency\listingsource\models\User;
-use kuriousagency\listingsource\models\Bundle;
-use kuriousagency\listingsource\models\Related;
-use kuriousagency\listingsource\models\Event;
+use webdna\listingsource\models\Category;
+use webdna\listingsource\models\Entry;
+use webdna\listingsource\models\Group;
+use webdna\listingsource\models\Products;
+use webdna\listingsource\models\Section;
+use webdna\listingsource\models\User;
+use webdna\listingsource\models\Bundle;
+use webdna\listingsource\models\Related;
+use webdna\listingsource\models\Event;
 
 use Craft;
 use craft\base\ElementInterface;
@@ -33,7 +33,7 @@ use craft\helpers\Json;
 use craft\validators\ArrayValidator;
 
 /**
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  */
@@ -50,7 +50,7 @@ class ListingSourceField extends Field
 	public $allowCustomText;
 	public $defaultText;
 	public $allowTarget;
-	
+
 	private $_availableTypes;
 
     // Static Methods
@@ -96,11 +96,11 @@ class ListingSourceField extends Field
 			$this->addError('sources', 'Please select a source');
 			$return = false;
 		}
-		
+
 		//Craft::dd($this->getErrors());
 		return $return;
 	}
-	
+
 	public function getElementValidationRules(): array
 	{
 		return ['validateValue'];
@@ -109,7 +109,7 @@ class ListingSourceField extends Field
 	public function validateValue(ElementInterface $element)
 	{
 		$fieldValue = $element->getFieldValue($this->handle);
-		
+
 		//Craft::dd($fieldValue->validate());
         if($fieldValue && count($fieldValue->getErrors()))
         {
@@ -143,10 +143,10 @@ class ListingSourceField extends Field
 			$value instanceof Related ||
 			$value instanceof Event
 		) {
-			
+
 			return $value;
 		}
-		
+
 		if (is_string($value)) {
 			$value = Json::decodeIfJson($value);
 		}
@@ -157,8 +157,8 @@ class ListingSourceField extends Field
 
 		if (isset($value['type']) && $value['type'] != '') {
 
-			$value['type'] = str_replace("kuriousagency\\listingsource\\models\\", '', $value['type']);
-			$model = $this->getModelByType("kuriousagency\\listingsource\\models\\".$value['type'], $value);
+			$value['type'] = str_replace("webdna\\listingsource\\models\\", '', $value['type']);
+			$model = $this->getModelByType("webdna\\listingsource\\models\\".$value['type'], $value);
 			//Craft::dump($model->getParent());
 		}
 		//Craft::dump($value);
@@ -186,7 +186,7 @@ class ListingSourceField extends Field
 				//Craft::dd($value->serializeValue($value, $element));
 			return parent::serializeValue($value->serializeValue($value, $element), $element);
 		}
-		
+
 		return parent::serializeValue($value, $element);
     }
 
@@ -197,7 +197,7 @@ class ListingSourceField extends Field
     {
         $view = Craft::$app->getView();
 		$view->registerAssetBundle(SettingsAsset::class);
-		
+
         return $view->renderTemplate(
             'listingsource/_components/fields/settings',
             [
@@ -214,9 +214,9 @@ class ListingSourceField extends Field
 		/*if (!$value) {
 			return '';
 		}*/
-		
+
 		$view = Craft::$app->getView();
-		
+
 		// Register our asset bundle
         $view->registerAssetBundle(FieldAsset::class);
 
@@ -249,7 +249,7 @@ class ListingSourceField extends Field
             ]
         );
 	}
-	
+
 	private function getModelByType(string $type, $value=null)
 	{
 		if (!$type) {
@@ -299,7 +299,7 @@ class ListingSourceField extends Field
 			'label' => 'Select source type',
 			'value' => '',
 		];
-		
+
 		foreach ($this->getSourceTypes() as $type)
 		{
 			$options[] = [

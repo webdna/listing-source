@@ -4,13 +4,13 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
-namespace kuriousagency\listingsource\models;
+namespace webdna\listingsource\models;
 
-use kuriousagency\listingsource\ListingSource;
+use webdna\listingsource\ListingSource;
 
 use Craft;
 use craft\base\Model;
@@ -22,7 +22,7 @@ use craft\validators\ArrayValidator;
 use craft\helpers\Db;
 
 /**
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  */
@@ -53,7 +53,7 @@ class Event extends Model
 	{
 		return 'Event Category';
 	}
-	
+
 	public function getType()
 	{
 		//return get_class($this);
@@ -148,7 +148,7 @@ class Event extends Model
 		$query->status = ['live','expired'];
 		$query->endDate = '>= '.$currentdate;
 		$query->relatedTo = $this->getElement()->id;
-		
+
 		$query->limit = null;
 		if ($this->total) {
 			$query->limit = $this->total;
@@ -218,7 +218,7 @@ class Event extends Model
 		} else {
 			$group = $this->getElement() ? $this->getElement()->group : null;
 		}*/
-		
+
 		$attributes = [
 			//'userDefined' => 'User Defined',
 			'title' => 'Title',
@@ -255,7 +255,7 @@ class Event extends Model
 		if ($model && $model->type == $this->type) {
 			$this->value = $model->value ?? null;
 		}
-		
+
 		$id = $view->formatInputId($field->handle);
 		$namespacedId = $view->namespaceInputId($id);
 
@@ -269,7 +269,7 @@ class Event extends Model
 				$sources[$key] = 'group:'.$source;
 			}
 		}
-		
+
 		$jsonVars = [
             'id' => $id,
             'name' => $field->handle,
@@ -278,7 +278,7 @@ class Event extends Model
             ];
         $jsonVars = Json::encode($jsonVars);
 		$view->registerJs("$('#{$namespacedId}-field').ListingSourceField(" . $jsonVars . ");");
-		
+
 		// Render the input template
         return $view->renderTemplate(
             'listingsource/_components/types/input/_element',

@@ -4,30 +4,30 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
-namespace kuriousagency\listingsource\services;
+namespace webdna\listingsource\services;
 
-use kuriousagency\listingsource\ListingSource;
+use webdna\listingsource\ListingSource;
 
-use kuriousagency\listingsource\models\Category;
-use kuriousagency\listingsource\models\Entry;
-use kuriousagency\listingsource\models\Group;
-use kuriousagency\listingsource\models\Products;
-use kuriousagency\listingsource\models\Section;
-use kuriousagency\listingsource\models\User;
-use kuriousagency\listingsource\models\Bundle;
-use kuriousagency\listingsource\models\Related;
-use kuriousagency\listingsource\models\Event;
+use webdna\listingsource\models\Category;
+use webdna\listingsource\models\Entry;
+use webdna\listingsource\models\Group;
+use webdna\listingsource\models\Products;
+use webdna\listingsource\models\Section;
+use webdna\listingsource\models\User;
+use webdna\listingsource\models\Bundle;
+use webdna\listingsource\models\Related;
+use webdna\listingsource\models\Event;
 
 use Craft;
 use craft\base\Component;
 use craft\helpers\Component as ComponentHelper;
 
 /**
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  */
@@ -43,7 +43,7 @@ class ListingSourceService extends Component
     {
 		$pluginsService = Craft::$app->getPlugins();
 		$types = [];
-		
+
 		$types[] = new Category();
 		$types[] = new Entry();
 		$types[] = new Related();
@@ -62,5 +62,5 @@ class ListingSourceService extends Component
 
 		return $types;
 	}
-	
+
 }

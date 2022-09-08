@@ -1,8 +1,8 @@
 {
-	"name": "kuriousagency/listing-source",
+	"name": "webdna/listing-source",
 	"description": "listing entries, categories, etc.",
 	"type": "craft-plugin",
-	"version": "2.4.5",
+	"version": "2.4.6",
 	"keywords": [
 		"craft",
 		"cms",
@@ -11,14 +11,14 @@
 		"listing source"
 	],
 	"support": {
-		"docs": "https://github.com/kuriousagency/listing-source/blob/master/README.md",
-		"issues": "https://github.com/kuriousagency/listing-source/issues"
+		"docs": "https://github.com/webdna/listing-source/blob/master/README.md",
+		"issues": "https://github.com/webdna/listing-source/issues"
 	},
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "Kurious Agency",
-			"homepage": "https://kurious.agency"
+			"name": "webdna",
+			"homepage": "https://webdna.co.uk"
 		}
 	],
 	"require": {
@@ -34,7 +34,7 @@
 		"handle": "listingsource",
 		"hasCpSettings": false,
 		"hasCpSection": false,
-		"changelogUrl": "https://raw.githubusercontent.com/kuriousagency/listing-source/master/CHANGELOG.md",
-		"class": "kuriousagency\\listingsource\\ListingSource"
+		"changelogUrl": "https://raw.githubusercontent.com/webdna/listing-source/master/CHANGELOG.md",
+		"class": "webdna\\listingsource\\ListingSource"
 	}
 }

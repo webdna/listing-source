@@ -4,14 +4,14 @@
  *
  * listing entries, categories, etc.
  *
- * @link      https://kurious.agency
- * @copyright Copyright (c) 2019 Kurious Agency
+ * @link      https://webdna.co.uk
+ * @copyright Copyright (c) 2019 webdna
  */
 
-namespace kuriousagency\listingsource;
+namespace webdna\listingsource;
 
-use kuriousagency\listingsource\services\ListingSourceService;
-use kuriousagency\listingsource\fields\ListingSourceField;
+use webdna\listingsource\services\ListingSourceService;
+use webdna\listingsource\fields\ListingSourceField;
 
 use Craft;
 use craft\base\Plugin;
@@ -25,7 +25,7 @@ use yii\base\Event;
 /**
  * Class ListingSource
  *
- * @author    Kurious Agency
+ * @author    webdna
  * @package   ListingSource
  * @since     2.0.0
  *
@@ -58,7 +58,7 @@ class ListingSource extends Plugin
     {
         parent::init();
 		self::$plugin = $this;
-		
+
 		$this->setComponents([
             'service' => ListingSourceService::class,
         ]);
