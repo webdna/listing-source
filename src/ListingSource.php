@@ -38,7 +38,7 @@ class ListingSource extends Plugin
     /**
      * @var ListingSource
      */
-    public static $plugin;
+    public static ListingSource $plugin;
 
     // Public Properties
     // =========================================================================
@@ -46,7 +46,7 @@ class ListingSource extends Plugin
     /**
      * @var string
      */
-    public $schemaVersion = '2.0.0';
+    public string $schemaVersion = '2.0.0';
 
     // Public Methods
     // =========================================================================
@@ -54,12 +54,12 @@ class ListingSource extends Plugin
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
-		self::$plugin = $this;
+        self::$plugin = $this;
 
-		$this->setComponents([
+        $this->setComponents([
             'service' => ListingSourceService::class,
         ]);
 

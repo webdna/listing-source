@@ -27,7 +27,7 @@ class SettingsAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         $this->sourcePath = "@webdna/listingsource/assetbundles/settings/dist";
 

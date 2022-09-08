@@ -40,4 +40,4 @@ Some things to do, and ideas for potential features:
 
 * Release it
 
-Brought to you by [Kurious Agency](https://kurious.agency)
+Brought to you by [webdna](https://webdna.co.uk)

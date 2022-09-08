@@ -13,8 +13,9 @@ namespace webdna\listingsource\controllers;
 use webdna\listingsource\ListingSource;
 
 use Craft;
-use craft\web\Controller;
 use craft\elements\Entry;
+use craft\web\Controller;
+use craft\web\Response;
 
 /**
  * @author    webdna
@@ -28,11 +29,11 @@ class DefaultController extends Controller
     // =========================================================================
 
     /**
-     * @var    bool|array Allows anonymous access to this controller's actions.
+     * @var    bool|array|int Allows anonymous access to this controller's actions.
      *         The actions must be in 'kebab-case'
      * @access protected
      */
-    protected $allowAnonymous = [];
+    protected bool|array|int $allowAnonymous = [];
 
     // Public Methods
     // =========================================================================
@@ -40,44 +41,44 @@ class DefaultController extends Controller
     /**
      * @return mixed
      */
-    public function actionSticky()
+    public function actionSticky(): ?Response
     {
-		$request = Craft::$app->getRequest();
-		$handle = $request->getRequiredBodyParam('handle');
-		$type = $request->getRequiredBodyParam('type');
-		$value = $request->getRequiredBodyParam('value');
+        $request = Craft::$app->getRequest();
+        $handle = $request->getRequiredBodyParam('handle');
+        $type = $request->getRequiredBodyParam('type');
+        $value = $request->getRequiredBodyParam('value');
 
-		if ($value == '*') {
-			return $this->asJson([
-				'elementType' => Entry::class,
-				'sources' => ['*'],
-				'criteria' => ['level'=>1],
-			]);
-		}
+        if ($value == '*') {
+            return $this->asJson([
+                'elementType' => Entry::class,
+                'sources' => ['*'],
+                'criteria' => ['level'=>1],
+            ]);
+        }
 
-		$model = new $type();
-		$model->setStickyValue($value);
+        $model = new $type();
+        $model->setStickyValue($value);
 
-		return $this->asJson($model->getStickyParams($model));
-	}
+        return $this->asJson($model->getStickyParams($model));
+    }
 
-	public function actionAttributes()
-	{
-		$request = Craft::$app->getRequest();
-		$type = $request->getRequiredBodyParam('type');
-		$value = $request->getRequiredBodyParam('value');
+    public function actionAttributes(): ?Response
+    {
+        $request = Craft::$app->getRequest();
+        $type = $request->getRequiredBodyParam('type');
+        $value = $request->getRequiredBodyParam('value');
 
-		if ($value == '*') {
-			return $this->asJson([
-				'title' => 'Title',
-				'postDate' => 'Date',
-			]);
-		}
+        if ($value == '*') {
+            return $this->asJson([
+                'title' => 'Title',
+                'postDate' => 'Date',
+            ]);
+        }
 
-		$model = new $type();
-		$model->setAttributesValue($value);
+        $model = new $type();
+        $model->setAttributesValue($value);
 
-		return $this->asJson($model->getSourceAttributes($model));
-	}
+        return $this->asJson($model->getSourceAttributes($model));
+    }
 
 }

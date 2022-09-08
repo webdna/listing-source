@@ -39,28 +39,28 @@ class ListingSourceService extends Component
     /*
      * @return mixed
      */
-    public function getSourceTypes()
+    public function getSourceTypes(): array
     {
-		$pluginsService = Craft::$app->getPlugins();
-		$types = [];
+        $pluginsService = Craft::$app->getPlugins();
+        $types = [];
 
-		$types[] = new Category();
-		$types[] = new Entry();
-		$types[] = new Related();
-		$types[] = new Group();
-		if ($pluginsService->isPluginInstalled('commerce') && $pluginsService->isPluginEnabled('commerce')) {
-		$types[] = new Products();
-		}
-		if ($pluginsService->isPluginInstalled('commerce-bundles') && $pluginsService->isPluginEnabled('commerce-bundles')) {
-		$types[] = new Bundle();
-		}
-		if ($pluginsService->isPluginInstalled('events') && $pluginsService->isPluginEnabled('events')) {
-		$types[] = new Event();
-		}
-		$types[] = new Section();
-		$types[] = new User();
+        $types[] = new Category();
+        $types[] = new Entry();
+        $types[] = new Related();
+        $types[] = new Group();
+        if ($pluginsService->isPluginInstalled('commerce') && $pluginsService->isPluginEnabled('commerce')) {
+        $types[] = new Products();
+        }
+        if ($pluginsService->isPluginInstalled('commerce-bundles') && $pluginsService->isPluginEnabled('commerce-bundles')) {
+        $types[] = new Bundle();
+        }
+        if ($pluginsService->isPluginInstalled('events') && $pluginsService->isPluginEnabled('events')) {
+        $types[] = new Event();
+        }
+        $types[] = new Section();
+        $types[] = new User();
 
-		return $types;
-	}
+        return $types;
+    }
 
 }

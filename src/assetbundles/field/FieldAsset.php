@@ -27,7 +27,7 @@ class FieldAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         $this->sourcePath = "@webdna/listingsource/assetbundles/field/dist";
 

@@ -42,16 +42,14 @@ class ListingSourceField extends Field
     // Public Properties
     // =========================================================================
 
-	public $types;
-	public $sources;
+    public array $types;
+    public array $sources;
 
-	// legacy
-	public $selectLinkText;
-	public $allowCustomText;
-	public $defaultText;
-	public $allowTarget;
-
-	private $_availableTypes;
+    // legacy
+    public string $selectLinkText;
+    public bool $allowCustomText;
+    public string $defaultText;
+    public bool $allowTarget;
 
     // Static Methods
     // =========================================================================
@@ -70,54 +68,49 @@ class ListingSourceField extends Field
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = parent::rules();
-		//$rules[] = [['types'], ArrayValidator::class, 'min' => 1, 'tooFew' => Craft::t('listingsource', 'You must select one source type.'), 'skipOnEmpty' => false];
+        //$rules[] = [['types'], ArrayValidator::class, 'min' => 1, 'tooFew' => Craft::t('listingsource', 'You must select one source type.'), 'skipOnEmpty' => false];
         return $rules;
-	}
+    }
 
-	public function validate($attributeNames = NULL, $clearErrors = true)
-	{
-		//Craft::dump($attributeNames);
-		$sources = false;
-		$return = true;
-		foreach ($this->types as $key => $value)
-		{
-			if ($value['enabled']) {
-				$sources = true;
-				if ($value['sources'] == '') {
-					$this->addError($key, 'Please select at least one source');
-					$return = false;
-				}
-			}
-		}
-		if (!$sources) {
-			$this->addError('sources', 'Please select a source');
-			$return = false;
-		}
+    public function validate(): bool
+    {
+        $sources = false;
+        $return = true;
+        foreach ($this->types as $key => $value)
+        {
+            if ($value['enabled']) {
+                $sources = true;
+                if ($value['sources'] == '') {
+                    $this->addError($key, 'Please select at least one source');
+                    $return = false;
+                }
+            }
+        }
+        if (!$sources) {
+            $this->addError('sources', 'Please select a source');
+            $return = false;
+        }
 
-		//Craft::dd($this->getErrors());
-		return $return;
-	}
+        return $return;
+    }
 
-	public function getElementValidationRules(): array
-	{
-		return ['validateValue'];
-	}
+    public function getElementValidationRules(): array
+    {
+        return ['validateValue'];
+    }
 
-	public function validateValue(ElementInterface $element)
-	{
-		$fieldValue = $element->getFieldValue($this->handle);
+    public function validateValue(ElementInterface $element): void
+    {
+        $fieldValue = $element->getFieldValue($this->handle);
 
-		//Craft::dd($fieldValue->validate());
         if($fieldValue && count($fieldValue->getErrors()))
         {
-			//Craft::dump($fieldValue->getErrors());
             $element->addModelErrors($fieldValue, $this->handle);
-		}
-		//Craft::dd($fieldValue->getErrors());
-	}
+        }
+    }
 
     /**
      * @inheritdoc
@@ -130,73 +123,67 @@ class ListingSourceField extends Field
     /**
      * @inheritdoc
      */
-    public function normalizeValue($value, ElementInterface $element = null)
+    public function normalizeValue(mixed $value): mixed
     {
-		//Craft::dump($value);
-		if ($value instanceof Category ||
-			$value instanceof Entry ||
-			$value instanceof Group ||
-			$value instanceof Products ||
-			$value instanceof Section ||
-			$value instanceof User ||
-			$value instanceof Bundle ||
-			$value instanceof Related ||
-			$value instanceof Event
-		) {
+        if ($value instanceof Category ||
+            $value instanceof Entry ||
+            $value instanceof Group ||
+            $value instanceof Products ||
+            $value instanceof Section ||
+            $value instanceof User ||
+            $value instanceof Bundle ||
+            $value instanceof Related ||
+            $value instanceof Event
+        ) {
+            return $value;
+        }
 
-			return $value;
-		}
+        if (is_string($value)) {
+            $value = Json::decodeIfJson($value);
+        }
 
-		if (is_string($value)) {
-			$value = Json::decodeIfJson($value);
-		}
+        $model = null;
 
-		$model = null;
+        if (isset($value['type']) && $value['type'] != '') {
 
-		//Craft::dd($value);
+            $value['type'] = str_replace("webdna\\listingsource\\models\\", '', $value['type']);
+            $model = $this->getModelByType("webdna\\listingsource\\models\\".$value['type'], $value);
+        }
 
-		if (isset($value['type']) && $value['type'] != '') {
-
-			$value['type'] = str_replace("webdna\\listingsource\\models\\", '', $value['type']);
-			$model = $this->getModelByType("webdna\\listingsource\\models\\".$value['type'], $value);
-			//Craft::dump($model->getParent());
-		}
-		//Craft::dump($value);
-
-		return $model;
+        return $model;
     }
 
     /**
      * @inheritdoc
      */
-    public function serializeValue($value, ElementInterface $element = null)
+    public function serializeValue(mixed $value, ElementInterface $element = null): mixed
     {
-		//Craft::dd($value);
-		if ($value instanceof Category ||
-			$value instanceof Entry ||
-			$value instanceof Group ||
-			$value instanceof Products ||
-			$value instanceof Section ||
-			$value instanceof User ||
-			$value instanceof Bundle ||
-			$value instanceof Related ||
-			$value instanceof Event
-		) {
+        //Craft::dd($value);
+        if ($value instanceof Category ||
+            $value instanceof Entry ||
+            $value instanceof Group ||
+            $value instanceof Products ||
+            $value instanceof Section ||
+            $value instanceof User ||
+            $value instanceof Bundle ||
+            $value instanceof Related ||
+            $value instanceof Event
+        ) {
 
-				//Craft::dd($value->serializeValue($value, $element));
-			return parent::serializeValue($value->serializeValue($value, $element), $element);
-		}
+                //Craft::dd($value->serializeValue($value, $element));
+            return parent::serializeValue($value->serializeValue($value, $element), $element);
+        }
 
-		return parent::serializeValue($value, $element);
+        return parent::serializeValue($value, $element);
     }
 
     /**
      * @inheritdoc
      */
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         $view = Craft::$app->getView();
-		$view->registerAssetBundle(SettingsAsset::class);
+        $view->registerAssetBundle(SettingsAsset::class);
 
         return $view->renderTemplate(
             'listingsource/_components/fields/settings',
@@ -209,15 +196,12 @@ class ListingSourceField extends Field
     /**
      * @inheritdoc
      */
-    public function getInputHtml($value, ElementInterface $element = null): string
+    public function getInputHtml(mixed $value, ElementInterface $element = null): string
     {
-		/*if (!$value) {
-			return '';
-		}*/
 
-		$view = Craft::$app->getView();
+        $view = Craft::$app->getView();
 
-		// Register our asset bundle
+        // Register our asset bundle
         $view->registerAssetBundle(FieldAsset::class);
 
         // Get our id and namespace
@@ -238,75 +222,74 @@ class ListingSourceField extends Field
         return $view->renderTemplate(
             'listingsource/_components/fields/input',
             [
-				'name' => $this->handle,
-				'model' => $value,
-				//'type' => $value['type'],
-				//'value' => $value['value'],
-				'element' => $element,
+                'name' => $this->handle,
+                'model' => $value,
+                //'type' => $value['type'],
+                //'value' => $value['value'],
+                'element' => $element,
                 'field' => $this,
                 'id' => $id,
-				'namespacedId' => $namespacedId,
+                'namespacedId' => $namespacedId,
             ]
         );
-	}
+    }
 
-	private function getModelByType(string $type, $value=null)
-	{
-		if (!$type) {
-			return null;
-		}
-		$pluginsService = Craft::$app->getPlugins();
-		$model = new $type();
-		if ($value) {
-			$model->setAttributes($value, false);
-		}
-		if ($model->type == 'Products' && (!$pluginsService->isPluginInstalled('commerce') || !$pluginsService->isPluginEnabled('commerce'))) {
-			return null;
-		}
-		if ($model->type == 'Events' && (!$pluginsService->isPluginInstalled('events') || !$pluginsService->isPluginEnabled('events'))) {
-			return null;
-		}
-		return $model;
-	}
+    private function getModelByType(string $type, mixed $value = null): mixed
+    {
+        if (!$type) {
+            return null;
+        }
+        $pluginsService = Craft::$app->getPlugins();
+        $model = new $type();
+        if ($value) {
+            $model->setAttributes($value, false);
+        }
+        if ($model->type == 'Products' && (!$pluginsService->isPluginInstalled('commerce') || !$pluginsService->isPluginEnabled('commerce'))) {
+            return null;
+        }
+        if ($model->type == 'Events' && (!$pluginsService->isPluginInstalled('events') || !$pluginsService->isPluginEnabled('events'))) {
+            return null;
+        }
+        return $model;
+    }
 
-	public function getAllSourceTypes()
-	{
-		return ListingSource::$plugin->service->getSourceTypes();
-	}
+    public function getAllSourceTypes(): array
+    {
+        return ListingSource::$plugin->service->getSourceTypes();
+    }
 
-	public function getSourceTypes()
-	{
-		$types = [];
-		//Craft::dd($this->types);
+    public function getSourceTypes(): array
+    {
+        $types = [];
 
-		foreach ($this->types as $key => $settings)
-		{
-			if ($settings['enabled']) {
-				$type = $this->getModelByType($key, $settings);
-				if ($type) {
-					$types[] = $type;
-				}
-			}
-		}
+        foreach ($this->types as $key => $settings)
+        {
+            if ($settings['enabled']) {
+                $type = $this->getModelByType($key, $settings);
+                if ($type) {
+                    $types[] = $type;
+                }
+            }
+        }
 
-		return $types;
-	}
+        return $types;
+    }
 
-	public function getSourceTypesAsOptions()
-	{
-		$options = [];
-		$options[] = [
-			'label' => 'Select source type',
-			'value' => '',
-		];
+    public function getSourceTypesAsOptions(): array
+    {
+        $options = [];
+        $options[] = [
+            'label' => 'Select source type',
+            'value' => '',
+        ];
 
-		foreach ($this->getSourceTypes() as $type)
-		{
-			$options[] = [
-				'label' => $type->name,
-				'value' => $type->type,
-			];
-		}
-		return $options;
-	}
+        foreach ($this->getSourceTypes() as $type)
+        {
+            $options[] = [
+                'label' => $type->name,
+                'value' => $type->type,
+            ];
+        }
+        return $options;
+    }
 }
