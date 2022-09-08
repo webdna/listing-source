@@ -42,14 +42,14 @@ class ListingSourceField extends Field
     // Public Properties
     // =========================================================================
 
-    public array $types;
-    public array $sources;
+    public array $types = [];
+    public array $sources = [];
 
     // legacy
-    public string $selectLinkText;
-    public bool $allowCustomText;
-    public string $defaultText;
-    public bool $allowTarget;
+    public string $selectLinkText = '';
+    public bool $allowCustomText = false;
+    public string $defaultText = '';
+    public bool $allowTarget = false;
 
     // Static Methods
     // =========================================================================
@@ -75,7 +75,7 @@ class ListingSourceField extends Field
         return $rules;
     }
 
-    public function validate(): bool
+    public function validate($attributeNames = null, $clearErrors = true): bool
     {
         $sources = false;
         $return = true;
@@ -123,7 +123,7 @@ class ListingSourceField extends Field
     /**
      * @inheritdoc
      */
-    public function normalizeValue(mixed $value): mixed
+    public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if ($value instanceof Category ||
             $value instanceof Entry ||

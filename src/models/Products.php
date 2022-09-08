@@ -312,7 +312,7 @@ class Products extends Model
         return $rules;
     }
 
-    public function getErrors(?string $attribute = null): array
+    public function getErrors($attribute = null): array
     {
         $errors = [];
         if (!$this->realValue && (($attribute && $attribute == 'value') || !$attribute)) {

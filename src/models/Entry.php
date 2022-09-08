@@ -293,6 +293,7 @@ class Entry extends Model
     }
 
     public function getStickyParams(Model $model): array
+    {
         $view = Craft::$app->getView();
 
         return [
@@ -310,7 +311,7 @@ class Entry extends Model
         return $rules;
     }
 
-    public function getErrors(?string $attribute = null): array
+    public function getErrors($attribute = null): array
     {
         $errors = [];
         if (!$this->realValue && (($attribute && $attribute == 'value') || !$attribute)) {
