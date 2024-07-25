@@ -44,7 +44,7 @@
 	{% set errors = element.getErrors(field.handle~'.value') ?? [] %}
 	{{ forms.errorList(errors) }}
 	<a href="#" class="fieldtoggle" data-target="{{ id }}-options" onClick="return false;">Options</a>
-	<div id="{{ id }}-options" class="listingsource-options hidden">
+	<div id="{{ id }}-options" class="hidden listingsource-options">
 <div class="flex">
 	<h5>Ordering:</h5>
 <div class="flex">
@@ -117,7 +117,7 @@
 		<small class="instructions">The first item in the list will show as the featured item.</small>
 	</div>
 
-	<div class="flex sticky">
+	<div class="sticky flex">
 		<h5>Sticky:</h5>
 		<div>
 		{% if name is defined and name %}
@@ -197,7 +197,7 @@
 	};
 
 	{% if model.value is defined %}
-		{% set stickyParams = model.getStickyParams('{{ namespacedId }}', model) %}
+		{% set stickyParams = model.getStickyParams(model) %}
 		console.log({{ id|namespaceInputId|json_encode|raw }})
 		console.log({{ model|json_encode|raw }})
 		listingSource.sticky[{{ id|namespaceInputId|json_encode|raw }}].set({{ stickyParams.elementType|json_encode|raw }}, {{ stickyParams.criteria|json_encode|raw }}, {{ stickyParams.sources|json_encode|raw }});

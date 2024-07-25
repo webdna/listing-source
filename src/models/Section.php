@@ -18,6 +18,7 @@ use craft\base\Model;
 use craft\base\ElementInterface;
 use craft\elements\Entry as CraftSection;
 use craft\helpers\Json;
+use craft\models\Section as ModelsSection;
 use craft\validators\ArrayValidator;
 
 /**
@@ -39,7 +40,7 @@ class Section extends Model
     public bool $sticky = false;
     public bool $featured = false;
 
-    private ?ElementInterface $_element = null;
+    private ?ModelsSection $_element = null;
     private ?ElementInterface $_parent = null;
 
     // Public Methods
@@ -71,7 +72,7 @@ class Section extends Model
         return true;
     }
 
-    public function getElement(): ?ElementInterface
+    public function getElement(): ?ModelsSection
     {
         if (!$this->_element) {
             if ($this->value){
@@ -227,7 +228,7 @@ class Section extends Model
             'postDate' => 'Date',
         ]);
         if ($group) {
-            foreach ($group->fields as $field)
+            foreach ($group->fieldLayout->customFields as $field)
             {
                 //Craft::dump(get_class($field));
                 $attributes[$field->handle] = $field->name;
