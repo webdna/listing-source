@@ -100,20 +100,37 @@ class Related extends Model
 		return 'entry';//$this->element->handle;
 	}
 
+	// public function getRealValue($type)
+	// {
+	// 	$value = null;
+	// 	if (is_array($this->value)) {
+	// 		if (array_key_exists($this->type, $this->value)) {
+	// 			$value = $this->value[$this->type];
+	// 			if (is_array($value)) {
+	// 				$value = $value[$type];
+	// 				if (is_array($value)) {
+	// 					$value = $value[0];
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	return $value;
+	// }
 	public function getRealValue($type)
 	{
 		$value = null;
-		if (is_array($this->value)) {
-			if (array_key_exists($this->type, $this->value)) {
-				$value = $this->value[$this->type];
+		if (is_array($this->value) && array_key_exists($this->type, $this->value)) {
+			$value = $this->value[$this->type];
+
+			if (is_array($value) && array_key_exists($type, $value)) {
+				$value = $value[$type];
+
 				if (is_array($value)) {
-					$value = $value[$type];
-					if (is_array($value)) {
-						$value = $value[0];
-					}
+					$value = $value[0] ?? null;
 				}
 			}
 		}
+
 		return $value;
 	}
 
