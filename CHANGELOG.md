@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.4.6 - 2025-04-30
+## 2.4.7 - 2025-04-30
 - Fix to related.php getRealValue function
 
 ## 2.4.6 - 2022-09-08
