@@ -2,7 +2,7 @@
 	"name": "webdna/listing-source",
 	"description": "listing entries, categories, etc.",
 	"type": "craft-plugin",
-	"version": "2.4.7",
+	"version": "2.4.8",
 	"keywords": [
 		"craft",
 		"cms",
@@ -26,7 +26,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"kuriousagency\\listingsource\\": "src/"
+			"webdna\\listingsource\\": "src/"
 		}
 	},
 	"extra": {
