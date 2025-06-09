@@ -36,7 +36,7 @@ class Products extends Model
     public string $order = 'asc';
     public int $total = 0;
     public bool $pagination = false;
-    public bool $sticky = false;
+    public mixed $sticky = false;
     public bool $featured = false;
 
     private ?ElementInterface $_element = null;
