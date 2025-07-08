@@ -241,7 +241,7 @@ class Bundle extends Model
         return $types;
     }
 
-    public function getInputHtml(Field $field, Model $model, bool $selected = false): string
+    public function getInputHtml(Field $field, ?Model $model, bool $selected = false): string
     {
         $view = Craft::$app->getView();
 

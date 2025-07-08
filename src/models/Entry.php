@@ -219,9 +219,14 @@ class Entry extends Model
             'title' => 'Title',
             'postDate' => 'Date',
         ];
-        if ($group) {
-            foreach ($group->fields as $field)
-            {
+        // if ($group) {
+        //     foreach ($group->fields as $field)
+        //     {
+        //         $attributes[$field->handle] = $field->name;
+        //     }
+        // }
+        if ($group && ($fieldLayout = $group->getFieldLayout())) {
+            foreach ($fieldLayout->getCustomFields() as $field) {
                 $attributes[$field->handle] = $field->name;
             }
         }
@@ -242,7 +247,7 @@ class Entry extends Model
         return $types;
     }
 
-    public function getInputHtml(Field $field, Model $model, bool $selected = false): string
+    public function getInputHtml(Field $field, ?Model $model, bool $selected = false): string
     {
         $view = Craft::$app->getView();
 

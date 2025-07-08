@@ -84,7 +84,7 @@
 			name: {{ category.name|namespaceInputName|json_encode|raw }},
 			elementType: {{ category.elementType|json_encode|raw }},
 			sources: {{ category.sources|json_encode|raw }},
-			criteria: {{ {siteId:null, status:null, enabledForSite:false}|json_encode|raw }},
+			criteria: {{ {siteId:null, status:null}|json_encode|raw }},
 			sourceElementId: {{ sourceElementId|json_encode|raw }},
 			viewMode: 'list',
 			limit: 1,
