@@ -71,7 +71,7 @@ class Related extends Model
         return true;
     }
 
-    public function getElement(string $type = 'section'): ?ElementInterface
+    public function getElement(string $type = 'section'): mixed
     {
         //if (!$this->_element && !$this->_element[$type]) {
             //if ($this->value) Craft::dd($this->getRealValue('section'));
