@@ -212,9 +212,12 @@ class User extends Model
         ];
         foreach(Craft::$app->getUser()->getIdentity()->getFieldLayout()->getTabs() as $tab)
         {
-            foreach ($tab->getFields() as $field)
+            foreach ($tab->getElements() as $layoutElement)
             {
-                $attributes[$field->handle] = $field->name;
+                if ($layoutElement instanceof \craft\fieldlayoutelements\CustomField) {
+                    $field = $layoutElement->getField();
+                    $attributes[$field->handle] = $field->name;
+                }
             }
         }
 

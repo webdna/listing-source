@@ -78,7 +78,7 @@ class Related extends Model
             //if ($type == 'category') Craft::dd($type);
             if ($this->value){
                 if ($type == 'section') {
-                    return Craft::$app->getSections()->getSectionById((int) $this->getRealValue('section'));
+                    return Craft::$app->getEntries()->getSectionById((int) $this->getRealValue('section'));
                 }
                 if ($type == 'category') {
                     //Craft::dd(Craft::$app->getCategories()->getCategoryById($this->getRealValue('category')));
@@ -227,9 +227,9 @@ class Related extends Model
     public function getSourceAttributes(Model $model): array
     {
         /*if ($group) {
-            $group = Craft::$app->getSections()->getSectionByHandle($group);
+            $group = Craft::$app->getEntries()->getSectionByHandle($group);
         } else {*/
-            $group = $model->getElement('section') ? $model->getElement('section')->entryTypes[0] : null;
+            $group = $model->getElement('section') ? $model->getElement('section')->getEntryTypes()[0] : null;
         //}
 
         $attributes = [];
@@ -265,7 +265,7 @@ class Related extends Model
                 'handle' => '*',
             ]
         ];
-        foreach (Craft::$app->getSections()->getAllSections() as $type)
+        foreach (Craft::$app->getEntries()->getAllSections() as $type)
         {
             $types[$type->id] = [
                 'label' => $type->name,

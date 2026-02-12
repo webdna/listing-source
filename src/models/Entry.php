@@ -236,7 +236,7 @@ class Entry extends Model
     public function getSourceTypes(): array
     {
         $types = [];
-        foreach (Craft::$app->getSections()->getAllSections() as $type)
+        foreach (Craft::$app->getEntries()->getAllSections() as $type)
         {
             $types[] = [
                 'label' => $type->name,

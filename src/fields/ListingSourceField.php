@@ -115,7 +115,7 @@ class ListingSourceField extends Field
     /**
      * @inheritdoc
      */
-    public function getContentColumnType(): string
+    public static function dbType(): string
     {
         return Schema::TYPE_TEXT;
     }
@@ -196,7 +196,7 @@ class ListingSourceField extends Field
     /**
      * @inheritdoc
      */
-    public function getInputHtml(mixed $value, ElementInterface $element = null): string
+    protected function inputHtml(mixed $value, ?ElementInterface $element = null, bool $inline = false): string
     {
 
         $view = Craft::$app->getView();

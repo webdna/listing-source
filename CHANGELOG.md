@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.0 - 2026-02-11
+### Changed
+- Updated for Craft 5 compatibility
+- Migrated from `getSections()` service to `getEntries()` service
+- Updated field type to use `dbType()` and `inputHtml()` method signatures
+- Updated entry types access to use `getEntryTypes()` method
+- Updated user field layout to use `getElements()` on tabs
+
 ## 3.0.5 - 2025-12-5
 ### Fixed
 - Syntax Errors

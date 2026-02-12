@@ -76,7 +76,7 @@ class Section extends Model
     {
         if (!$this->_element) {
             if ($this->value){
-                $this->_element = Craft::$app->getSections()->getSectionById((int) $this->realValue);
+                $this->_element = Craft::$app->getEntries()->getSectionById((int) $this->realValue);
                 //$this->_element = CraftSection::find()->id($this->realValue)->site('*')->one();
             }
         }
@@ -213,9 +213,9 @@ class Section extends Model
     public function getSourceAttributes(Model $model): array
     {
         /*if ($group) {
-            $group = Craft::$app->getSections()->getSectionByHandle($group);
+            $group = Craft::$app->getEntries()->getSectionByHandle($group);
         } else {*/
-            $group = $model->getElement() ? $model->getElement()->entryTypes[0] : null;
+            $group = $model->getElement() ? $model->getElement()->getEntryTypes()[0] : null;
         //}
 
         $attributes = [];
@@ -228,7 +228,7 @@ class Section extends Model
             'postDate' => 'Date',
         ]);
         if ($group) {
-            foreach ($group->fieldLayout->customFields as $field)
+            foreach ($group->getFieldLayout()->getCustomFields() as $field)
             {
                 //Craft::dump(get_class($field));
                 $attributes[$field->handle] = $field->name;
@@ -240,7 +240,7 @@ class Section extends Model
     public function getSourceTypes(): array
     {
         $types = [];
-        foreach (Craft::$app->getSections()->getAllSections() as $type)
+        foreach (Craft::$app->getEntries()->getAllSections() as $type)
         {
             $types[$type->id] = [
                 'label' => $type->name,
